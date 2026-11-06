@@ -1,6 +1,8 @@
 # GRAINS
 
-A granular sampler that runs in the browser. One HTML file, no build step, no dependencies. Built for touch screens (phones and tablets), and works with a computer keyboard too. Black and white, same design family as BEHEMOTH and ELEPHANT.
+A granular sampler and playable instrument that runs in the browser. One HTML file, no build step, no dependencies. Built for touch screens (phones and tablets), with a black-and-white interface from the same design family as BEHEMOTH and ELEPHANT.
+
+Load or record a sound, then play it as a cloud of tiny grains: freeze it, move through it with your finger, modulate it with two LFOs, run it through an arpeggiator or a 16-step sequencer, and record the result.
 
 ## Screenshots
 
@@ -35,44 +37,59 @@ Landscape console layout:
 ## Features
 
 **Granular engine**
-- Grains are scheduled ahead of time on the Web Audio clock: position, spray, size, density, pitch, detune, reverse chance and window shape
+- Grains are scheduled ahead of time on the Web Audio clock: position, spray, size, density, pitch, detune, reverse chance and window shape (rect, Hann, percussive)
 - Per-grain windowing and random stereo placement, with automatic gain compensation so dense clouds do not clip
-- Lowpass filter with resonance, gate envelope, feedback echo, reverb and a master compressor
+- Scan, lowpass filter with resonance, attack / release envelope, feedback echo, reverb and a master compressor
 - Freeze: locks position and scan and sustains the cloud (grain size stays live)
 
+**Sample**
+- 6 generated demo sounds (pad, glass, choir, wind, keys, pluck), your own audio files, or the microphone (up to 30 s)
+- Finger-controlled editor with a non-destructive loop region: drag the two handles (they snap to zero crossings), swipe to select, pinch to zoom, double-tap to reset the zoom, tap to set the position
+- Tools: preview, crop, remove, trim silence, full region, normalize, gain, reverse, fade in / out
+- GRAB the last 2, 5 or 10 seconds of what you hear as a new sample
+- REC OUT records the output, SAVE WAV exports the current sample; both write 16-bit WAV files and use the share sheet on phones
+
 **Modulation (MOD)**
-- Two LFOs: sine, triangle, square, saw, sample and hold; each with rate, depth and a target (position, spray, size, density, pitch, cutoff, width, reverb)
+- Two LFOs: sine, triangle, square, saw, sample and hold; each with its own rate, depth and target (position, spray, size, density, pitch, cutoff, width, reverb)
 
 **Playing**
-- Keyboard with hold, octave shift and randomize; scale quantization (8 scales, any root) that also snaps Y:PITCH
-- Play tab: full-size touch surface with a switchable Y axis, plus a gesture recorder that loops your finger movement
-- 4 scenes (snapshots) to jump between sounds
-- MIDI input (Web MIDI): notes, pitch bend, sustain pedal, CC map with LEARN (not available in iOS Safari)
+- Keyboard with hold, octave shift and randomize
+- Scale quantization: 8 scales, any root; it also snaps the Y:PITCH axis of the touch surface
+- PLAY tab: a full-size touch surface (X = position, Y = spray, size, density, cutoff or pitch) and a gesture recorder that loops your finger movement
+- 4 snapshots to jump between sounds, 11 factory presets and your own presets
+- MIDI input (Web MIDI): notes, pitch bend, sustain pedal, a default CC map and LEARN (tap a knob, then move a controller)
 
 **Arpeggiator and sequencer (SEQ)**
-- Arpeggiator: up, down, up-down, random, order; 1-3 octaves; 1/4 to 1/32; gate and BPM
-- 16-step sequencer with adjustable length
-
-**Sample**
-- 6 generated demo samples (pad, glass, choir, wind, keys, pluck), load your own audio, or record from the microphone
-- Finger-controlled editor: drag the loop-region handles (snap to zero crossings), swipe to select, pinch to zoom, double-tap to reset zoom, tap to set position
-- Tools: preview, crop, remove, trim silence, full, normalize, gain, reverse, fade in/out
-- GRAB the last 2 / 5 / 10 s of output as a new sample; REC OUT and SAVE WAV export 16-bit WAV files
+- Arpeggiator: up, down, up-down, random, order; 1 to 3 octaves; note length from 1/4 to 1/32; gate and BPM
+- 16-step sequencer with adjustable length; drag in the grid to set the note of each step
 
 **Workflow**
 - Undo / redo for parameters, loop region and sample edits
-- Factory and user presets, saved in the browser
 - Knobs: drag to turn, double-tap to reset
-- Interface languages: English (default), Russian and Spanish; choose it in SAMPLE → Settings → Language, or pick Auto
+- Interface languages: English (default), Russian and Spanish; choose it in SAMPLE → Settings → Language, or pick Auto to follow the browser language
 - Step-by-step tutorial on first launch (replay it in SAMPLE → Settings) and contextual tips on each tab
-- Portrait layout for phones, landscape console layout for wide screens
+- Portrait layout for phones, landscape console layout (side rail, screens, keys) for wide screens
 
 **Install**
 - Installable as an app (PWA): fullscreen, works offline once loaded over HTTPS
 
-**Limits**
-- Undo does not cover LFO, arpeggiator, sequencer or scale settings; your own samples are not kept across reloads
-- GRAB and REC OUT use the ScriptProcessor API, which is deprecated but still supported everywhere
+## Screens
+
+| Tab | What is there |
+| --- | --- |
+| GRAIN | Dot-matrix sample view and the main grain knobs |
+| TONE | Scan, filter, envelope, echo and reverb |
+| MOD | Two LFOs |
+| PLAY | Touch surface, Y-axis choice, snapshots, gesture looper |
+| SEQ | Scale, arpeggiator, 16-step sequencer |
+| SAMPLE | Load, record, grab, demos, editor, export, MIDI, settings |
+
+## Notes and limits
+
+- Web MIDI works in Chrome and Edge (desktop and Android). It is not available in iOS Safari, where the MIDI card just says so.
+- Undo / redo covers parameters, the loop region and sample edits, but not LFO, arpeggiator, sequencer or scale settings.
+- Your own samples are not kept after a reload. Presets and settings are saved in the browser.
+- GRAB and REC OUT use the ScriptProcessor API, which is deprecated but still supported by current browsers.
 
 ## Run
 
