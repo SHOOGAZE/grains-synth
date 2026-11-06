@@ -1,0 +1,53 @@
+/* ================= landscape: console layout (rail + screens + keys), same idea as BEHEMOTH ================= */
+@media (orientation:landscape) and (min-width:640px){
+  body{padding-left:max(8px,env(safe-area-inset-left,0px));padding-right:max(8px,env(safe-area-inset-right,0px));padding-bottom:env(safe-area-inset-bottom,0px)}
+  #app{display:grid;max-width:none;column-gap:10px;grid-template-columns:104px minmax(0,1fr);grid-template-rows:auto auto minmax(0,1fr) auto;grid-template-areas:"top top" "rail oled" "rail views" "rail dock"}
+  header#top{grid-area:top;flex-wrap:nowrap;padding:4px 0 6px;margin-bottom:6px}
+  .logo{flex:none;font-size:15px;margin-right:4px}
+  .pgroup{order:1;flex:1 1 0;max-width:460px;margin-left:8px}
+  header#top label.hbtn{order:2;margin-left:auto}
+  header#top #recBtn{order:2}
+  .hbtn,#presetBtn,.pnav{height:34px}
+  .oled{grid-area:oled;height:46px;padding:5px 10px;margin-bottom:6px}
+  .oled .l1{font-size:9px}.oled .l2{font-size:15px;margin-top:1px}.oled .l3{display:none}.oled canvas{height:34px}
+  #views{grid-area:views;padding:0 0 4px}
+  #dock{grid-area:dock;flex-direction:row;align-items:stretch;gap:8px;padding:6px 0}
+  #dock .drow{flex:none}
+  #dock .sp{display:none}
+  #dock .kbd{flex:1;min-width:0;height:46px}
+  nav#tabs{grid-area:rail;display:flex;flex-direction:column;gap:4px;padding:0 0 6px}
+  nav#tabs button{flex:1;max-height:88px;flex-direction:row;justify-content:flex-start;gap:9px;padding:0 10px;font-size:11px;letter-spacing:.14em;border:1px solid #1c1c1c;border-radius:3px}
+  nav#tabs button.on{background:#121212;border-color:#2c2c2c}
+  nav#tabs{border-top:0}
+  nav#tabs button{position:static}
+  nav#tabs button::before{display:none}
+  .view .wide{grid-column:auto}
+  .view.on{display:grid;height:100%;gap:8px;align-items:stretch;align-content:stretch}
+  .card{display:flex;flex-direction:column;padding:8px 9px;min-width:0}
+  .card h3{margin-bottom:8px}
+  .hint{display:none}
+  #cvMain,#cvSurf{height:auto;flex:1 1 0;min-height:60px}
+  .kgrid{grid-template-columns:repeat(var(--n,4),1fr);gap:6px 2px;flex:1;align-content:center}
+  .knob{max-width:66px}
+  .knob svg{max-width:54px}
+  .knob .lbl{font-size:8.5px;letter-spacing:.1em}
+  .knob .vv{font-size:10px;min-height:12px}
+  #v-grain.on{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}
+  #v-grain .kgrid{grid-template-columns:repeat(4,1fr)}
+  #v-tone.on{grid-template-columns:4fr 3fr 4fr;height:auto;align-content:center}
+  #v-play.on{grid-template-columns:minmax(0,1fr) 300px}
+  #v-play .chips{gap:4px}
+  #v-play .chip{min-height:30px;padding:0 8px;font-size:10px;letter-spacing:.08em}
+  #v-play .snaps{grid-template-columns:repeat(4,1fr);gap:4px;margin-top:8px}
+  #v-play .snap{min-height:46px;font-size:10px;letter-spacing:.04em;padding:0 2px}
+  #v-play .snap small{font-size:8px}
+  #v-sample.on{grid-template-columns:repeat(2,minmax(0,1fr));height:auto;align-content:start}
+  #v-sample .wide{grid-column:1/-1}
+  #toast,#tip{bottom:66px}
+  .sheet{max-width:760px;max-height:96%}
+}
+@media (orientation:landscape) and (min-width:640px) and (max-height:540px){
+  .card h3{display:none}
+  #v-sample .card h3{display:flex}
+}
+

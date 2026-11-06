@@ -1,0 +1,204 @@
+<!doctype html>
+<!--
+  GRAINS — granular sampler for the browser. Single file, no dependencies.
+  Copyright (c) 2026 Kirill Kinderhart. Released under the MIT License.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="GRAINS">
+<meta name="theme-color" content="#0a0a0a">
+<title>GRAINS</title>
+<style>
+<!--@css-->
+</style>
+</head>
+<body>
+<div id="app">
+  <header id="top">
+    <div class="logo">GRAINS</div>
+    <button class="hbtn sq" id="undoBtn" type="button" aria-label="Undo" disabled>↶</button>
+    <button class="hbtn sq" id="redoBtn" type="button" aria-label="Redo" disabled>↷</button>
+    <label class="hbtn" for="file">LOAD</label>
+    <button class="hbtn" id="recBtn" type="button">● REC</button>
+    <div class="pgroup">
+      <button class="pnav" id="pPrev" type="button" aria-label="Previous preset">‹</button>
+      <button id="presetBtn" type="button"><span id="pName">CLOUD</span><i>▾</i></button>
+      <button class="pnav" id="pNext" type="button" aria-label="Next preset">›</button>
+    </div>
+  </header>
+
+  <div class="oled">
+    <div><div class="l1" id="l1">NO SAMPLE</div><div class="l2" id="l2">GRAINS</div><div class="l3" id="l3">DRAG KNOBS · DOUBLE-TAP TO RESET</div></div>
+    <canvas id="scope"></canvas>
+  </div>
+
+  <div id="views">
+    <section class="view on" id="v-grain">
+      <div class="card wide">
+        <h3>Sample<span class="sp"></span></h3>
+        <canvas class="vis" id="cvMain"></canvas>
+        <div class="hint">Drag: X = position · Y = spray (up = wider)</div>
+      </div>
+      <div class="card wide"><h3>Grain</h3><div class="kgrid" data-k="pos,spray,size,dens,pitch,detune,rev,shape"></div></div>
+    </section>
+
+    <section class="view" id="v-tone">
+      <div class="card"><h3>Motion · Envelope</h3><div class="kgrid" data-k="scan,width,atk,rel"></div></div>
+      <div class="card"><h3>Filter · Output</h3><div class="kgrid" data-k="cut,res,level"></div></div>
+      <div class="card wide"><h3>Echo · Space</h3><div class="kgrid" data-k="dtime,dfb,delay,verb"></div></div>
+    </section>
+
+    <section class="view" id="v-mod">
+      <div class="card">
+        <h3>LFO 1</h3>
+        <canvas class="lfoCv" id="lfoCv1"></canvas>
+        <div class="lab">Shape</div><div class="chips tight" id="l1shape"></div>
+        <div class="lab">Target</div><div class="chips tight" id="l1tgt"></div>
+        <div class="kgrid" data-k="l1rate,l1depth" style="margin-top:14px"></div>
+      </div>
+      <div class="card">
+        <h3>LFO 2</h3>
+        <canvas class="lfoCv" id="lfoCv2"></canvas>
+        <div class="lab">Shape</div><div class="chips tight" id="l2shape"></div>
+        <div class="lab">Target</div><div class="chips tight" id="l2tgt"></div>
+        <div class="kgrid" data-k="l2rate,l2depth" style="margin-top:14px"></div>
+      </div>
+      <div class="card wide"><p class="note" style="margin:0">Depth 0 switches an LFO off. The LFOs move the grain settings around the values of the knobs, so the cloud keeps changing by itself.</p></div>
+    </section>
+
+    <section class="view" id="v-seq">
+      <div class="card">
+        <h3>Scale</h3>
+        <div class="lab">Root</div><div class="chips tight" id="rootChips"></div>
+        <div class="lab">Scale</div><div class="chips tight" id="scaleChips"></div>
+        <div class="hint">Keys, MIDI and Y: PITCH follow the scale</div>
+      </div>
+      <div class="card">
+        <h3>Tempo</h3>
+        <div class="kgrid" data-k="bpm,agate"></div>
+        <div class="lab">Rate</div><div class="chips tight" id="divChips"></div>
+        <div class="hint">Shared by the arpeggiator and the sequencer</div>
+      </div>
+      <div class="card">
+        <h3>Arpeggiator</h3>
+        <div class="chips tight"><button class="chip" id="arpOn" type="button">ARP OFF</button></div>
+        <div class="lab">Mode</div><div class="chips tight" id="arpMode"></div>
+        <div class="lab">Octaves</div><div class="chips tight" id="arpOct"></div>
+        <div class="hint">Hold keys to arpeggiate them</div>
+      </div>
+      <div class="card wide">
+        <h3>Sequencer</h3>
+        <div class="chips tight" id="seqBar"></div>
+        <div class="lab">Length</div><div class="chips tight" id="seqLen"></div>
+        <div class="steps" id="steps"></div>
+        <canvas class="vis" id="cvSeq"></canvas>
+        <div class="hint">Tap a step to switch it · drag in the grid to set its note · keys transpose</div>
+      </div>
+    </section>
+
+    <section class="view" id="v-play">
+      <div class="card wide">
+        <h3>Surface</h3>
+        <canvas class="vis" id="cvSurf"></canvas>
+        <div class="hint">X = position</div>
+      </div>
+      <div class="card wide">
+        <h3>Controls</h3>
+        <div class="chips" id="yChips"></div>
+        <div class="snaps" id="snaps"></div>
+        <div class="hint">Tap: recall · hold: store</div>
+        <div class="lab gest">Gesture</div>
+        <div class="btns" id="gRow"><button class="btn" id="gRec" type="button">● REC</button><button class="btn" id="gLoop" type="button">▶ LOOP</button><button class="btn" id="gClr" type="button">CLEAR</button></div>
+        <div class="hint" id="gInfo">No gesture</div>
+      </div>
+    </section>
+
+    <section class="view" id="v-sample">
+      <div class="card">
+        <h3>Source</h3>
+        <div class="btns"><label class="btn" for="file">LOAD</label><button class="btn" id="recBtn2" type="button">● REC</button></div>
+        <div class="lab">Grab last</div><div class="chips tight" id="grabChips"></div>
+        <div class="lab">Demo sounds</div><div class="chips tight" id="demoChips"></div>
+        <p class="note" id="sinfo" style="margin:12px 0 0">No sample loaded.</p>
+        <p class="note" style="margin:8px 0 0">Load any audio file or record from the microphone. GRAB turns the last seconds of what you hear into a new sample. Short loops and sustained sounds make the best clouds.</p>
+      </div>
+      <div class="card wide" id="edCard">
+        <h3>Edit</h3>
+        <canvas class="vis" id="cvEdit"></canvas>
+        <div class="note" id="edInfo" style="margin-top:8px"></div>
+        <div class="tools" id="edTools"></div>
+        <div class="hint">Drag the handles: loop region · swipe: select · pinch: zoom · double-tap: reset zoom</div>
+      </div>
+      <div class="card">
+        <h3>Export</h3>
+        <div class="btns"><button class="btn" id="outBtn" type="button">● REC OUT</button><button class="btn" id="wavBtn" type="button">SAVE WAV</button></div>
+        <p class="note" style="margin:10px 0 0">REC OUT records everything you hear and saves it as a 16-bit stereo WAV. SAVE WAV writes the current sample.</p>
+      </div>
+      <div class="card">
+        <h3>MIDI</h3>
+        <div class="btns"><button class="btn" id="midiBtn" type="button">ENABLE MIDI</button><button class="btn" id="learnBtn" type="button">LEARN</button></div>
+        <p class="note" id="midiInfo" style="margin:10px 0 0">Notes, pitch bend and sustain pedal play the sampler. Tap LEARN, touch a knob, then move a controller to map it.</p>
+      </div>
+      <div class="card">
+        <h3>Settings</h3>
+        <div class="lab">Language</div><div class="chips" id="langChips"></div>
+        <div class="lab">Tips</div><div class="chips" id="tipsChips"></div>
+        <div class="lab">Tutorial</div><button class="btn" id="tourBtn" type="button" style="width:100%">Play tutorial</button>
+      </div>
+      <div class="card">
+        <h3>Display</h3>
+        <div class="chips" id="accChips"></div>
+      </div>
+      <div class="card">
+        <h3>About</h3>
+        <p class="note" style="margin:0">Granular sampler. Position and spray choose where grains come from, size and density shape the cloud, scan moves through the sample. Hold several keys for a chord cloud.</p>
+        <p class="note" style="margin:8px 0 0">© 2026 Kirill Kinderhart · MIT</p>
+      </div>
+    </section>
+  </div>
+
+  <div id="dock">
+    <div class="drow">
+      <button class="pill" id="hold" type="button">HOLD</button>
+      <button class="pill" id="freeze" type="button">FREEZE</button>
+      <div class="stepper"><button id="octM" type="button" aria-label="Octave down">−</button><span id="octV">OCT 0</span><button id="octP" type="button" aria-label="Octave up">+</button></div>
+      <span class="sp"></span>
+      <button class="pill" id="rnd" type="button">RND</button>
+    </div>
+    <div class="kbd" id="kbd"></div>
+  </div>
+
+  <nav id="tabs">
+    <button class="on" data-t="grain" type="button">GRAIN</button>
+    <button data-t="tone" type="button">TONE</button>
+    <button data-t="mod" type="button">MOD</button>
+    <button data-t="play" type="button">PLAY</button>
+    <button data-t="seq" type="button">SEQ</button>
+    <button data-t="sample" type="button">SAMPLE</button>
+  </nav>
+</div>
+
+<input id="file" type="file" accept="audio/*" hidden>
+<div id="start"><canvas id="dust"></canvas><div class="big" aria-label="GRAINS">GRAINS</div><div class="err" id="startErr"></div><i class="hz" id="startHz">touch anywhere to start · headphones recommended</i><button id="startBtn" type="button" aria-label="Touch to start"></button></div>
+<div id="toast" role="status"></div>
+<div class="sheetbg" id="sbg"></div>
+<div class="sheet" id="sheet"><div class="grab"></div><h2>PRESETS<button class="hbtn" id="sClose" type="button" style="height:30px">CLOSE</button></h2><div class="sbody"><div class="savebox"><input id="pnameIn" type="text" placeholder="Name" maxlength="24"><button class="btn" id="pSave" type="button">SAVE</button></div><div class="plist" id="plist"></div></div></div>
+
+<script>
+(function(){
+'use strict';
+<!--@js-->
+})();
+</script>
+<script>if("serviceWorker"in navigator&&/^https?:$/.test(location.protocol)){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}</script>
+</body>
+</html>

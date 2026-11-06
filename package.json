@@ -6,6 +6,8 @@
   "license": "MIT",
   "author": "Kirill Kinderhart",
   "scripts": {
-    "start": "npx serve ."
+    "build": "node build.mjs",
+    "start": "npx serve .",
+    "test": "node build.mjs --test && node test/app.test.mjs && node test/ui.test.mjs"
   }
 }
