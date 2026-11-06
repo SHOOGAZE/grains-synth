@@ -2,7 +2,7 @@
 
 A granular sampler that runs in the browser. One HTML file, no build step, no dependencies. Built for touch screens (phones and tablets), and works with a computer keyboard too. Black and white, same design family as BEHEMOTH and ELEPHANT.
 
-▶ Listen: https://shoogaze.github.io/grains-synth/
+Try it: open shoogaze.github.io/grains-synth on your phone and tap the screen to start audio. On an iPhone or iPad use Share → Add to Home Screen for a full-screen app.
 
 ## Screenshots
 
