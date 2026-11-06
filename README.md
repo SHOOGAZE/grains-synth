@@ -2,6 +2,8 @@
 
 A granular sampler that runs in the browser. One HTML file, no build step, no dependencies. Built for touch screens (phones and tablets), and works with a computer keyboard too. Black and white, same design family as BEHEMOTH and ELEPHANT.
 
+▶ Listen: https://shoogaze.github.io/grains-synth/
+
 ## Screenshots
 
 <p>
