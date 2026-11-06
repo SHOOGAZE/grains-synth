@@ -2,6 +2,8 @@
 
 A granular sampler and playable instrument that runs in the browser. One HTML file, no build step, no dependencies. Built for touch screens (phones and tablets), with a black-and-white interface from the same design family as BEHEMOTH and ELEPHANT.
 
+Try it: open https://shoogaze.github.io/grains-synth/ on your phone and tap the screen to start audio. On an iPhone or iPad use Share → Add to Home Screen for a full-screen app.
+
 Load or record a sound, then play it as a cloud of tiny grains: freeze it, move through it with your finger, modulate it with two LFOs, run it through an arpeggiator or a 16-step sequencer, and record the result.
 
 ## Screenshots
