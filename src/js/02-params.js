@@ -20,6 +20,7 @@ var DEFS=[
  {k:'cut',  label:'CUTOFF',  def:18000,min:120,max:18000,kind:'exp',fmt:fHz},
  {k:'res',  label:'RESO',    def:.7, min:.5,max:12,kind:'exp',fmt:fRes},
  {k:'level',label:'LEVEL',   def:.7, min:0,max:1,fmt:fPct},
+ {k:'drive',label:'DRIVE',   def:0,  min:0,max:1,fmt:fPct},
  {k:'dtime',label:'D.TIME',  def:.37,min:.05,max:1.2,kind:'exp',fmt:fTime},
  {k:'dfb',  label:'D.FEEDB', def:.45,min:0,max:.92,fmt:fPct},
  {k:'delay',label:'DELAY',   def:.2, min:0,max:1,fmt:fPct},

@@ -1,5 +1,5 @@
 /* ---------------- audio graph ---------------- */
-var ctx=null,bus,lp,gate,master,dWet,vWet,dly,fb,ana,anaBuf;
+var ctx=null,bus,lp,gate,master,dWet,vWet,dly,fb,ana,anaBuf,drvPre,drvPost,drvDry;
 var buf=null,rbuf=null,peaks=null;
 var win=new Float32Array(64);
 function mkWin(){
@@ -28,6 +28,7 @@ function apply(k){
   else if(k==='delay')dWet.gain.setTargetAtTime(P.delay*.8,t,.02);
   else if(k==='verb')vWet.gain.setTargetAtTime(P.verb,t,.02);
   else if(k==='level')master.gain.setTargetAtTime(P.level*P.level*1.2,t,.02);
+  else if(k==='drive'){drvPre.gain.setTargetAtTime(1+P.drive*9,t,.02);drvPost.gain.setTargetAtTime(P.drive/(1+P.drive*2.2),t,.02);drvDry.gain.setTargetAtTime(1-P.drive*.6,t,.02)}
 }
 function startErr(t){$('#startErr').textContent=t}
 
@@ -39,6 +40,11 @@ function initAudio(){
   bus=ctx.createGain();
   lp=ctx.createBiquadFilter();lp.type='lowpass';
   gate=ctx.createGain();gate.gain.value=0;
+  /* drive: soft-clip (tanh) run in parallel with the clean signal, so DRIVE 0 is fully transparent */
+  drvPre=ctx.createGain();drvPost=ctx.createGain();drvDry=ctx.createGain();
+  var shp=ctx.createWaveShaper(),crv=new Float32Array(2049),ci;
+  for(ci=0;ci<2049;ci++){var cx=ci/1024-1;crv[ci]=Math.tanh(cx*2.2)/Math.tanh(2.2)}
+  shp.curve=crv;shp.oversample='2x';
   master=ctx.createGain();
   var dry=ctx.createGain();
   dly=ctx.createDelay(2);
@@ -53,7 +59,7 @@ function initAudio(){
   var sr=ctx.sampleRate,len=Math.floor(sr*2.8),ir=ctx.createBuffer(2,len,sr),c,i,d;
   for(c=0;c<2;c++){d=ir.getChannelData(c);for(i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,3)}
   conv.buffer=ir;
-  bus.connect(lp);lp.connect(gate);
+  bus.connect(lp);lp.connect(drvDry);drvDry.connect(gate);lp.connect(drvPre);drvPre.connect(shp);shp.connect(drvPost);drvPost.connect(gate);
   gate.connect(dry);dry.connect(master);
   gate.connect(dly);dly.connect(dlp);dlp.connect(fb);fb.connect(dly);dlp.connect(dWet);dWet.connect(master);
   gate.connect(conv);conv.connect(vWet);vWet.connect(master);

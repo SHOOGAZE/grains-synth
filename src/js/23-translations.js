@@ -9,7 +9,12 @@ var TR=[
  ['Filter','Фильтр','Filtro'],['Output','Выход','Salida'],['Echo','Эхо','Eco'],['Space','Пространство','Espacio'],
  ['Surface','Поверхность','Superficie'],['Controls','Управление','Controles'],['Source','Источник','Fuente'],['Display','Дисплей','Pantalla'],
  ['About','О приложении','Acerca de'],['Settings','Настройки','Ajustes'],['Language','Язык','Idioma'],['Tips','Подсказки','Consejos'],
- ['Tutorial','Туториал','Tutorial'],['Play tutorial','Пройти туториал','Ver tutorial'],['Auto','Авто','Auto'],['On','Вкл','Sí'],['Off','Выкл','No'],
+ ['Tutorial','Туториал','Tutorial'],['Interface','Интерфейс','Interfaz'],['Text size','Размер текста','Tamaño de texto'],['Contrast','Контраст','Contraste'],
+ 
+ ['Normal','Обычный','Normal'],['Large','Крупный','Grande'],['High','Высокий','Alto'],
+ ['Reset interface','Сбросить интерфейс','Restablecer interfaz'],['Interface reset','Интерфейс сброшен','Interfaz restablecida'],
+ ['EXPORT','ЭКСПОРТ','EXPORTAR'],['IMPORT','ИМПОРТ','IMPORTAR'],['DRIVE','ДРАЙВ','DRIVE'],
+ ['No user presets to export','Нет своих пресетов для экспорта','No hay presets propios para exportar'],['Not a GRAINS preset file','Это не файл пресетов GRAINS','No es un archivo de presets de GRAINS'],['Play tutorial','Пройти туториал','Ver tutorial'],['Auto','Авто','Auto'],['On','Вкл','Sí'],['Off','Выкл','No'],
  ['Drag: X = position · Y = spray (up = wider)','Тяни: X = позиция · Y = разброс (выше = шире)','Arrastra: X = posición · Y = dispersión (arriba = más ancha)'],
  ['X = position','X = позиция','X = posición'],
  ['Tap: recall · hold: store','Тап: вызвать · удержание: сохранить','Toque: recuperar · mantener: guardar'],
@@ -225,6 +230,7 @@ var TR_RULES=[
  [/^SNAP (\d)$/,{ru:'СНИМОК $1',es:'ESCENA $1'}],
  [/^OCT ([+-]?\d)$/,{ru:'ОКТ $1',es:'OCT $1'}],
  [/^USER (\d+)$/,{ru:'МОЙ $1',es:'USUARIO $1'}],
+ [/^Imported (\d+) presets?$/,{ru:'Импортировано пресетов: $1',es:'Presets importados: $1'}],
  [/^Audio could not start: (.+)$/,{ru:'Не удалось запустить звук: $1',es:'No se pudo iniciar el audio: $1'}]
 ];
 var I18N={ru:{},es:{}},I18N_LC={ru:{},es:{}},curLang='en',i18nRec=new WeakMap(),i18nObs=null;

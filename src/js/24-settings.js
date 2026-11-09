@@ -14,5 +14,33 @@ function buildSettings(){
     $('#tipsChips').appendChild(c);
   });
   $('#tourBtn').addEventListener('click',function(){tourStart(true)});
+  function chips(id,key,opts){
+    $$('#'+id+' .chip').forEach(function(x){x.remove()});
+    opts.forEach(function(o){
+      var c=document.createElement('button');c.type='button';c.className='chip'+(cfg[key]===o[0]?' on':'');c.textContent=o[1];
+      c.addEventListener('click',function(){
+        cfg[key]=o[0];store('grains.cfg.v1',cfg);applyCfg();
+        $$('#'+id+' .chip').forEach(function(x){x.classList.toggle('on',x===c)});
+      });
+      $('#'+id).appendChild(c);
+    });
+  }
+  function uiChips(){
+    chips('textChips','text',[['m','Normal'],['l','Large']]);
+    chips('contrastChips','contrast',[['normal','Normal'],['high','High']]);
+  }
+  uiChips();
+  $('#uiReset').addEventListener('click',function(){
+    cfg.text='m';cfg.contrast='normal';
+    store('grains.cfg.v1',cfg);applyCfg();uiChips();toast('Interface reset');
+  });
 }
 
+
+/* ≡ menu: language, tips, display, interface, MIDI */
+function openMenu(){$('#mbg').classList.add('on');$('#msheet').classList.add('on')}
+function closeMenu(){$('#mbg').classList.remove('on');$('#msheet').classList.remove('on')}
+$('#menuBtn').addEventListener('click',openMenu);
+$('#mbg').addEventListener('click',closeMenu);
+$('#mClose').addEventListener('click',closeMenu);
+$('#tourBtn').addEventListener('click',closeMenu);

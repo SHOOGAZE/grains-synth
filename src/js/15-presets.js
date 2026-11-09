@@ -59,3 +59,44 @@ $('#pSave').addEventListener('click',function(){
   $('#pnameIn').value='';buildList();toast('Saved '+name);
 });
 
+
+/* export / import of the user presets as one .json file (share sheet on phones) */
+function cleanPreset(p){
+  if(!p||typeof p.n!=='string'||!p.v||typeof p.v!=='object')return null;
+  var v={},n=0;
+  Object.keys(p.v).forEach(function(k){
+    var d=D[k],x=p.v[k];
+    if(!d||d.sys||k==='pos'||k==='level'||typeof x!=='number'||!isFinite(x))return;
+    v[k]=clamp(d.kind==='int'?Math.round(x):x,d.min,d.max);n++;
+  });
+  var name=p.n.replace(/[\u0000-\u001f]/g,'').trim().toUpperCase().slice(0,24);
+  return n&&name?{n:name,v:v}:null;
+}
+$('#pExport').addEventListener('click',function(){
+  if(!userPresets.length){toast('No user presets to export');return}
+  var blob=new Blob([JSON.stringify({app:'GRAINS',format:1,presets:userPresets},null,1)],{type:'application/json'});
+  saveBlob('grains-presets.json',blob);
+});
+$('#pImport').addEventListener('click',function(){$('#pFile').click()});
+$('#pFile').addEventListener('change',function(e){
+  var f=e.target.files&&e.target.files[0];e.target.value='';
+  if(!f)return;
+  if(f.size>2e6){toast('Not a GRAINS preset file');return}
+  var r=new FileReader();
+  r.onload=function(){
+    var j,list,added=0;
+    try{j=JSON.parse(r.result)}catch(x){j=null}
+    list=j&&j.app==='GRAINS'&&Array.isArray(j.presets)?j.presets:null;
+    if(!list){toast('Not a GRAINS preset file');return}
+    list.slice(0,200).forEach(function(p){
+      var c=cleanPreset(p);if(!c||userPresets.length>=200)return;
+      var same=userPresets.some(function(u){return u.n===c.n&&JSON.stringify(u.v)===JSON.stringify(c.v)});
+      if(same)return;
+      userPresets.push(c);added++;
+    });
+    store('grains.user.v1',userPresets);buildList();
+    toast('Imported '+added+(added===1?' preset':' presets'));
+  };
+  r.onerror=function(){toast('Not a GRAINS preset file')};
+  r.readAsText(f);
+});

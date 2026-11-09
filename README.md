@@ -1,13 +1,14 @@
 # GRAINS
 
-A granular sampler and playable instrument that runs in the browser. One HTML file, no build step, no dependencies. Built for touch screens (phones and tablets), with a black-and-white interface from the same design family as [BEHEMOTH](https://github.com/SHOOGAZE/behemoth-synth-) and [ELEPHANT](https://github.com/SHOOGAZE/elephant-sequencer)
+A granular sampler and playable instrument that runs in the browser. One HTML file, no dependencies, built for touch screens (phones and tablets). Works with MIDI controllers too, and installs as an app that runs offline. Member of a design family with [BEHEMOTH](https://shoogaze.github.io/behemoth-synth-/) and [ELEPHANT](https://shoogaze.github.io/elephant-sequencer/).
 
-
-Try it: open [GRAINS](https://shoogaze.github.io/grains-synth/) on your phone and tap the screen to start audio. On an iPhone or iPad use Share → Add to Home Screen for a full-screen app.
+**Try it:** open [GRAINS](https://shoogaze.github.io/grains-synth/) on your phone and tap the screen to start audio. On an iPhone or iPad use *Share → Add to Home Screen* for a full-screen app.
 
 Load or record a sound, then play it as a cloud of tiny grains: freeze it, move through it with your finger, modulate it with two LFOs, run it through an arpeggiator or a 16-step sequencer, and record the result.
 
 ## Screenshots
+
+Phone upright: GRAIN, TONE, MOD and PLAY tabs, SEQ, the SAMPLE tab, the finger-controlled region editor and the step-by-step tutorial.
 
 <p>
   <img src="screenshots/grain.png" width="24%" alt="Grain: dot-matrix sample view and grain knobs">
@@ -23,7 +24,7 @@ Load or record a sound, then play it as a cloud of tiny grains: freeze it, move 
   <img src="screenshots/tutorial.png" width="24%" alt="Step-by-step tutorial">
 </p>
 
-Landscape console layout:
+Phone held sideways and a tablet: the tabs move to a side rail, the keys stay under the sample.
 
 <p>
   <img src="screenshots/landscape.png" width="49%" alt="Landscape: Grain">
@@ -35,6 +36,8 @@ Landscape console layout:
 </p>
 <p>
   <img src="screenshots/landscape-edit.png" width="49%" alt="Landscape: Sample editor">
+  <img src="screenshots/tablet.png" width="24%" alt="Tablet, portrait">
+  <img src="screenshots/menu.png" width="24%" alt="The ≡ menu: MIDI, language, display, interface">
 </p>
 
 ## Features
@@ -42,7 +45,7 @@ Landscape console layout:
 **Granular engine**
 - Grains are scheduled ahead of time on the Web Audio clock: position, spray, size, density, pitch, detune, reverse chance and window shape (rect, Hann, percussive)
 - Per-grain windowing and random stereo placement, with automatic gain compensation so dense clouds do not clip
-- Scan, lowpass filter with resonance, attack / release envelope, feedback echo, reverb and a master compressor
+- Scan, lowpass filter with resonance, drive (soft clipping), attack / release envelope, feedback echo, reverb and a master compressor
 - Freeze: locks position and scan and sustains the cloud (grain size stays live)
 
 **Sample**
@@ -59,7 +62,7 @@ Landscape console layout:
 - Keyboard with hold, octave shift and randomize
 - Scale quantization: 8 scales, any root; it also snaps the Y:PITCH axis of the touch surface
 - PLAY tab: a full-size touch surface (X = position, Y = spray, size, density, cutoff or pitch) and a gesture recorder that loops your finger movement
-- 4 snapshots to jump between sounds, 11 factory presets and your own presets
+- 4 snapshots to jump between sounds, 11 factory presets and your own presets, which you can export and import as a `.json` file
 - MIDI input (Web MIDI): notes, pitch bend, sustain pedal, a default CC map and LEARN (tap a knob, then move a controller)
 
 **Arpeggiator and sequencer (SEQ)**
@@ -69,14 +72,16 @@ Landscape console layout:
 **Workflow**
 - Undo / redo for parameters, loop region and sample edits
 - Knobs: drag to turn, double-tap to reset
-- Interface languages: English (default), Russian and Spanish; choose it in SAMPLE → Settings → Language, or pick Auto to follow the browser language
-- Step-by-step tutorial on first launch (replay it in SAMPLE → Settings) and contextual tips on each tab
-- Portrait layout for phones, landscape console layout (side rail, screens, keys) for wide screens
+- Interface languages: English (default), Russian and Spanish; choose it in ≡ → Language, or pick Auto to follow the browser language
+- Step-by-step tutorial on first launch (replay it from ≡ → Play tutorial) and contextual tips on each tab
+- Portrait layout for phones, a full-width layout for tablets, landscape console layout (side rail, screens, keys) for wide screens; bar heights match BEHEMOTH and ELEPHANT
+- Interface settings: text size and contrast (≡ → Interface)
 
-**Install**
+**Phones and tablets**
+- Safe areas and dynamic viewport height for notched phones
 - Installable as an app (PWA): fullscreen, works offline once loaded over HTTPS
 
-## Screens
+## Tabs
 
 | Tab | What is there |
 | --- | --- |
@@ -85,9 +90,11 @@ Landscape console layout:
 | MOD | Two LFOs |
 | PLAY | Touch surface, Y-axis choice, snapshots, gesture looper |
 | SEQ | Scale, arpeggiator, 16-step sequencer |
-| SAMPLE | Load, record, grab, demos, editor, export, MIDI, settings |
+| SAMPLE | Load, record, grab, demos, editor, export |
+| ≡ (top right) | MIDI, language, tips, tutorial, display colour, interface |
 
 ## Notes and limits
+
 
 - Web MIDI works in Chrome and Edge (desktop and Android). It is not available in iOS Safari, where the MIDI card just says so.
 - Undo / redo covers parameters, the loop region and sample edits, but not LFO, arpeggiator, sequencer or scale settings.
@@ -102,7 +109,7 @@ For install and offline use, serve the files over HTTPS, for example with GitHub
 
 ### GitHub Pages
 
-Settings → Pages → Source: **GitHub Actions** (the included workflow deploys on every push to `main`), or Deploy from branch → `main` / root. The sampler is then available at `https://<user>.github.io/<repo>/`. On an iPhone or iPad use Share → Add to Home Screen, on Android use Install app in the browser menu.
+Settings → Pages → Source: **GitHub Actions** (the included workflow deploys on every push to `main`), or Deploy from branch → `main` / root. The sampler is then available at `https://<user>.github.io/<repo>/`, for this repo [shoogaze.github.io/grains-synth](https://shoogaze.github.io/grains-synth/). On an iPad or iPhone use Share → Add to Home Screen, on Android use the Install app button in the browser menu.
 
 ## Files
 
@@ -115,7 +122,7 @@ Settings → Pages → Source: **GitHub Actions** (the included workflow deploys
 | `build.mjs` | Builds `index.html` from `src/` (no dependencies) |
 | `test/` | Headless Chrome tests (`app.test.mjs`, `ui.test.mjs`) |
 | `manifest.webmanifest`, `sw.js`, `icons/` | Install and offline support |
-| `screenshots/` | README screenshots |
+| `screenshots/`, `tools/shots.py` | README screenshots and the script that makes them |
 | `.github/workflows/pages.yml` | Builds and deploys to GitHub Pages |
 | `LICENSE` | MIT |
 
@@ -133,8 +140,18 @@ The JS files are joined into a single scope, so their order matters: a file may 
 
 ## Browser support
 
-Current Chrome, Edge, Safari and Firefox.
+Current Chrome, Edge, Safari and Firefox. Web MIDI is available in Chromium-based browsers, not in iOS Safari.
+
+## The family
+
+Three instruments in one black-and-white design, each a single HTML file that runs offline. Open them on the same phone or tablet and add the ones you like to the Home Screen.
+
+| App | What it is | Open | Source |
+| --- | --- | --- | --- |
+| **ELEPHANT** | Pocket sampler groovebox: 16 pads, p-lock sequencer, sampler, FX | [shoogaze.github.io/elephant-sequencer](https://shoogaze.github.io/elephant-sequencer/) | [SHOOGAZE/elephant-sequencer](https://github.com/SHOOGAZE/elephant-sequencer) |
+| **BEHEMOTH** | Wavetable bass synthesizer with a modulation matrix | [shoogaze.github.io/behemoth-synth-](https://shoogaze.github.io/behemoth-synth-/) | [SHOOGAZE/behemoth-synth-](https://github.com/SHOOGAZE/behemoth-synth-) |
+| **GRAINS** | Granular sampler and playable instrument | [shoogaze.github.io/grains-synth](https://shoogaze.github.io/grains-synth/) | [SHOOGAZE/grains-synth](https://github.com/SHOOGAZE/grains-synth) |
 
 ## License
 
-[MIT](LICENSE)
+[MIT](LICENSE). Copyright (c) 2026 Kirill Kinderhart.

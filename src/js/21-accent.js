@@ -10,6 +10,12 @@ function applyAccent(hex){
 }
 var cfg=store('grains.cfg.v1')||{acc:0};
 cfg.lang=cfg.lang||'en';cfg.tips=cfg.tips||'on';
+cfg.text=cfg.text||'m';cfg.contrast=cfg.contrast||'normal';
+function applyCfg(){
+  var r=document.documentElement;
+  r.dataset.text=cfg.text;r.dataset.contrast=cfg.contrast;
+}
+applyCfg();
 ACCENTS.forEach(function(a,i){
   var c=document.createElement('button');c.type='button';c.className='chip'+(i===cfg.acc?' on':'');c.textContent=a[0];
   c.addEventListener('click',function(){cfg.acc=i;store('grains.cfg.v1',cfg);applyAccent(a[1]);$$('#accChips .chip').forEach(function(x){x.classList.toggle('on',x===c)})});

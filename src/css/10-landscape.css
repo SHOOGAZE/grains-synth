@@ -7,6 +7,7 @@
   .pgroup{order:1;flex:1 1 0;max-width:460px;margin-left:8px}
   header#top label.hbtn{order:2;margin-left:auto}
   header#top #recBtn{order:2}
+  header#top #menuBtn{order:3}
   .hbtn,#presetBtn,.pnav{height:34px}
   .oled{grid-area:oled;height:46px;padding:5px 10px;margin-bottom:6px}
   .oled .l1{font-size:9px}.oled .l2{font-size:15px;margin-top:1px}.oled .l3{display:none}.oled canvas{height:34px}

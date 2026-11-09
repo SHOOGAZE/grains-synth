@@ -290,6 +290,32 @@ await sleep(600);
 const sys = await ev(`JSON.parse(localStorage.getItem('grains.sys.v1')||'null')`);
 check('persist: scale, seq, midi map saved', sys && sys.stype === 1 && sys.seq && sys.map && sys.map['20'] === 'scan');
 
+// 12b drive, preset export/import, interface settings
+__setDrive: {
+  await ev(`__g.setParam('drive',0,true)`); await sleep(400);
+  const d0 = await ev(`__g.drv()`);
+  await ev(`__g.setParam('drive',1,true)`); await sleep(500);
+  const d1 = await ev(`__g.drv()`);
+  check('drive: 0 is transparent (wet 0, dry 1)', d0 && d0[1] < 0.01 && d0[2] > 0.99, JSON.stringify(d0));
+  check('drive: 1 raises pre-gain, adds wet, lowers dry', d1 && d1[0] > 9 && d1[1] > 0.2 && d1[2] < 0.5, JSON.stringify(d1));
+  await ev(`__g.setParam('drive',0,true)`);
+}
+check('presets: clean clamps and uppercases', JSON.stringify(await ev(`__g.cleanPreset({n:' my pad ',v:{size:99,dens:-5,pitch:3.6,pos:.5,bpm:300,junk:1}})`)) === JSON.stringify({ n: 'MY PAD', v: { size: 0.8, dens: 1, pitch: 4 } }));
+check('presets: clean rejects bad input', (await ev(`[__g.cleanPreset(null),__g.cleanPreset({n:'',v:{size:.1}}),__g.cleanPreset({n:'X',v:{nope:1}}),__g.cleanPreset({n:'X',v:{size:'a'}})].every(x=>x===null)`)) === true);
+await ev(`document.getElementById('pnameIn').value='EXP TEST';document.getElementById('pSave').click()`); await sleep(200);
+const nBefore = await ev(`__g.userPresets().length`);
+await ev(`window.__dl.length=0;document.getElementById('pExport').click()`); await sleep(500);
+const exp = await ev(`(async()=>{const b=window.__dl[window.__dl.length-1];if(!b)return null;return JSON.parse(await b.text())})()`);
+check('presets: export writes GRAINS json', exp && exp.app === 'GRAINS' && exp.presets.some(p => p.n === 'EXP TEST'), JSON.stringify(exp).slice(0, 120));
+await ev(`(()=>{const f=new File([JSON.stringify({app:'GRAINS',format:1,presets:[{n:'IMP ONE',v:{size:.3,verb:2}},{n:'bad',v:{}}]})],'p.json',{type:'application/json'});const dt=new DataTransfer();dt.items.add(f);const i=document.getElementById('pFile');i.files=dt.files;i.dispatchEvent(new Event('change'))})()`); await sleep(500);
+check('presets: import adds valid presets only', (await ev(`__g.userPresets().length`)) === nBefore + 1 && (await ev(`__g.userPresets().some(p=>p.n==='IMP ONE'&&p.v.verb===1)`)) === true);
+await ev(`(()=>{const f=new File(['not json'],'p.json');const dt=new DataTransfer();dt.items.add(f);const i=document.getElementById('pFile');i.files=dt.files;i.dispatchEvent(new Event('change'))})()`); await sleep(400);
+check('presets: import rejects junk', (await ev(`__g.userPresets().length`)) === nBefore + 1);
+await ev(`[...document.querySelectorAll('#textChips .chip')].find(c=>c.textContent==='Large').click();[...document.querySelectorAll('#contrastChips .chip')].find(c=>c.textContent==='High').click()`);
+check('interface: options applied', (await ev(`[document.documentElement.dataset.text,document.documentElement.dataset.contrast].join()`)) === 'l,high');
+await ev(`document.getElementById('uiReset').click()`);
+check('interface: reset', (await ev(`[document.documentElement.dataset.text,document.documentElement.dataset.contrast].join()`)) === 'm,normal');
+
 // 13 no errors so far
 check('no JS errors', errors.length === 0, JSON.stringify(errors.slice(0, 3)));
 

@@ -5,7 +5,8 @@
 .btn:disabled{opacity:.35}
 nav#tabs{grid-template-columns:repeat(6,1fr);gap:0}
 nav#tabs button{font-size:9px;letter-spacing:.08em}
-#dock .pill{padding:0 9px;font-size:10px;letter-spacing:.08em}
+#dock .pill{padding:0 10px;font-size:11.5px;letter-spacing:.08em;height:40px}
+#dock .stepper button{width:32px;height:38px}
 .stepper button{width:30px}
 .stepper span{min-width:46px}
 #cvEdit{height:170px}
@@ -39,3 +40,71 @@ nav#tabs button{font-size:9px;letter-spacing:.08em}
   #edCard{order:-1}
 }
 @media(max-width:380px){.hbtn{padding:0 8px;letter-spacing:.06em}.hbtn.sq{width:32px;padding:0}.logo{letter-spacing:.12em;font-size:15px}header#top{gap:6px 6px}}
+
+/* ================= shared proportions with BEHEMOTH / ELEPHANT =================
+   portrait phone: header 96 / dock 124 / tab bar 50. The OLED strip takes the place of BEHEMOTH's source bar. */
+.oled .l3{display:none}
+.oled .l2{font-size:17px;margin-top:2px}
+@media(max-height:640px){.oled .l2{font-size:15px}}
+
+/* ================= tablets: use the screen like BEHEMOTH (no 560px column) ================= */
+@media (min-width:700px) and (min-height:541px) and (orientation:portrait){
+  :root{--kbh:96px}
+  #app{max-width:1180px}
+  header#top{flex-wrap:nowrap;padding:12px 0 12px;margin-bottom:8px}
+  header#top .logo{flex:none;margin-right:6px}
+  .pgroup{order:1;flex:1 1 0;max-width:520px}
+  header#top label.hbtn{order:2;margin-left:auto}
+  header#top #recBtn{order:2}
+  header#top #menuBtn{order:3}
+  .oled{height:64px;padding:8px 14px;margin-bottom:12px}
+  .oled .l1{font-size:12px}.oled .l2{font-size:22px;margin-top:3px}.oled canvas{height:46px;width:170px}.oled{grid-template-columns:1fr 170px}
+  .view.on{gap:16px}
+  #cvMain{height:clamp(230px,30vh,380px)}#cvSurf{height:clamp(330px,38vh,480px)}#cvEdit{height:260px}#cvSeq{height:190px}
+  .kgrid{gap:18px 8px}
+  .knob{max-width:104px}.knob svg{max-width:96px}
+  .knob .lbl{font-size:11px}.knob .vv{font-size:12.5px}
+  #dock{gap:8px;padding-top:8px}
+  #dock .pill{padding:0 14px;height:44px}
+  #dock .stepper button{width:34px;height:42px}
+  #dock .stepper span{font-size:15px}
+  nav#tabs button{font-size:11px}
+  #toast,#tip{bottom:calc(env(safe-area-inset-bottom,0px) + 236px)}
+}
+/* tablet landscape: same console layout, bigger keys and bars */
+@media (orientation:landscape) and (min-width:900px) and (min-height:700px){
+  header#top{padding:11px 0 11px}
+  .oled{height:60px;padding:8px 12px}
+  .oled .l1{font-size:11px}.oled .l2{font-size:19px}.oled canvas{height:42px}
+  :root{--kbh:98px}
+  #dock{flex-direction:column;align-items:stretch;gap:8px;padding:8px 0 4px}
+  #dock .drow{display:flex;flex:none}
+  #dock .drow .sp{display:block}
+  #dock .pill{height:44px;padding:0 14px}
+  #dock .stepper button{width:34px;height:42px}
+  #dock .stepper span{font-size:15px}
+  #dock .kbd{flex:none;height:var(--kbh)}
+  #toast,#tip{bottom:calc(env(safe-area-inset-bottom,0px) + 196px)}
+  .knob{max-width:112px}.knob svg{max-width:100px}
+  .knob .lbl{font-size:11px}.knob .vv{font-size:12.5px}
+  .kgrid{gap:14px 6px}
+  nav#tabs button{font-size:12px}
+}
+
+/* ================= interface settings: text size and contrast (same options as BEHEMOTH) ================= */
+:root[data-contrast="high"]{--mute:#c9c5be;--dim:#a39f98;--line:#3d3d3d;--fg:#fff}
+:root[data-text="l"] .knob .lbl{font-size:12px}:root[data-text="l"] .knob .vv{font-size:13px}
+:root[data-text="l"] .card h3,:root[data-text="l"] .lab{font-size:12px}
+:root[data-text="l"] .hint,:root[data-text="l"] .note,:root[data-text="l"] .pi small{font-size:12px}
+:root[data-text="l"] .chip,:root[data-text="l"] .pill,:root[data-text="l"] .btn{font-size:13px}
+:root[data-text="l"] nav#tabs button{font-size:11px}
+:root[data-text="l"] .oled .l1{font-size:12px}
+
+#menuBtn{font-size:20px;padding-bottom:2px}
+#msheet .card{margin:0 0 10px}
+#msheet .sbody{padding-bottom:4px}
+/* phone: LOAD lives in SAMPLE, so the header has room for ≡ on the first line */
+@media (max-width:699px) and (orientation:portrait){
+  header#top label.hbtn{display:none}
+  header#top .logo{margin-right:auto}
+}

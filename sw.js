@@ -1,5 +1,5 @@
 // Offline cache for GRAINS (only active over https / localhost)
-var V = 'grains-v2';
+var V = 'grains-v4';
 var FILES = ['./', 'index.html', 'manifest.webmanifest', 'icons/icon.svg', 'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png'];
 self.addEventListener('install', function (e) {
   e.waitUntil(caches.open(V).then(function (c) { return c.addAll(FILES); }).then(function () { return self.skipWaiting(); }));
