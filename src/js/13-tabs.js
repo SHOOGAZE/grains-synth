@@ -1,4 +1,9 @@
 /* ---------------- tabs ---------------- */
+/* iOS Safari can keep stale hit-testing for blocks that were just un-hidden (a level change): force a layer and layout refresh, now and again once the sheet has finished closing */
+function kickLayout() {
+  function go() { ['#views', '#app', '#tabs', '.nav', '.main'].forEach(function (s) { var e = document.querySelector(s); if (!e) return; e.style.transform = 'translateZ(0)'; void e.offsetHeight; e.style.transform = ''; }); try { window.dispatchEvent(new Event('resize')); } catch (x) { } }
+  go(); requestAnimationFrame(go); setTimeout(go, 450);
+}
 var curTab='grain';
 var merged=false;
 /* interface level: simple keeps GRAIN, TONE and PLAY; full adds MOD, SEQ and SAMPLE */

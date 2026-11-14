@@ -15,7 +15,7 @@ function buildSettings(){
   });
   [['simple','Simple'],['full','Full']].forEach(function(o){
     var c=document.createElement('button');c.type='button';c.className='chip'+(cfg.ui===o[0]?' on':'');c.textContent=o[1];
-    c.addEventListener('click',function(){cfg.ui=o[0];store('grains.cfg.v1',cfg);applyLevel();$$('#levelChips .chip').forEach(function(x){x.classList.toggle('on',x===c)});toast(o[0]==='full'?'Full interface':'Simple interface')});
+    c.addEventListener('click',function(){cfg.ui=o[0];store('grains.cfg.v1',cfg);applyLevel();kickLayout();$$('#levelChips .chip').forEach(function(x){x.classList.toggle('on',x===c)});toast(o[0]==='full'?'Full interface':'Simple interface')});
     $('#levelChips').appendChild(c);
   });
   applyLevel();
