@@ -53,7 +53,7 @@ function press(id,k){
   if(k){k.classList.add('on');held.set(id,quant(+k.dataset.n))}
   ptr.set(id,k||null);
 }
-kb.addEventListener('pointerdown',function(e){e.preventDefault();initAudio();kb.setPointerCapture(e.pointerId);press(e.pointerId,keyAt(e.clientX,e.clientY))});
+kb.addEventListener('pointerdown',function(e){e.preventDefault();initAudio();try{kb.setPointerCapture(e.pointerId)}catch(x){};press(e.pointerId,keyAt(e.clientX,e.clientY))});
 kb.addEventListener('pointermove',function(e){if(ptr.has(e.pointerId))press(e.pointerId,keyAt(e.clientX,e.clientY))});
 var kup=function(e){press(e.pointerId,null);ptr.delete(e.pointerId)};
 kb.addEventListener('pointerup',kup);kb.addEventListener('pointercancel',kup);

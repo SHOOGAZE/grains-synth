@@ -5,9 +5,9 @@ function arc(a0,a1,r){
   var s=p(a0),e=p(a1);
   return 'M'+s[0]+' '+s[1]+'A'+r+' '+r+' 0 '+((a1-a0)>180?1:0)+' 1 '+e[0]+' '+e[1];
 }
-var knobs={};
-function makeKnob(d){
-  var el=document.createElement('div');el.className='knob';el.tabIndex=0;
+var knobs={},macroKnobs={};
+function makeKnob(d,opt){
+  var el=document.createElement('div');el.className='knob';el.tabIndex=0;el.setAttribute('role','slider');el.setAttribute('aria-label',d.label);el.setAttribute('aria-valuemin','0');el.setAttribute('aria-valuemax','100');
   el.innerHTML='<svg viewBox="0 0 64 64"><circle class="cap" cx="32" cy="32" r="16"/><line class="ind" x1="32" y1="32" x2="32" y2="20"/></svg><div class="lbl"></div><div class="vv"></div>';
   var ind=$('.ind',el),svg=$('svg',el),cap=$('.cap',el),dots=[],di,dc,da,NS='http://www.w3.org/2000/svg';
   /* the value ring is made of 21 grains: lit up to the value, from zero for bipolar params */
@@ -18,7 +18,7 @@ function makeKnob(d){
     dc.setAttribute('r',di%5===0?'2.2':'1.5');
     svg.insertBefore(dc,cap);dots.push(dc);
   }
-  $('.lbl',el).textContent=d.label;
+  $('.lbl',el).textContent=opt&&opt.macro?'M'+opt.macro+' · '+d.label:d.label;
   var vv=$('.vv',el);
   var K={el:el,update:function(){
     var n=clamp(toN(d.k,P[d.k]),0,1),a=-135+270*n;
@@ -31,20 +31,22 @@ function makeKnob(d){
     var t=a*Math.PI/180;
     ind.setAttribute('x2',(32+13*Math.sin(t)).toFixed(2));
     ind.setAttribute('y2',(32-13*Math.cos(t)).toFixed(2));
-    var vs=d.fmt(P[d.k]);if(vv.textContent!==vs)vv.textContent=vs;
+    var vs=d.fmt(P[d.k]);if(vv.textContent!==vs){vv.textContent=vs;el.setAttribute('aria-valuenow',Math.round(n*100));el.setAttribute('aria-valuetext',vs)}
   }};
-  var sy=0,sn=0,moved=false,lastTap=0;
+  var sy=0,sn=0,moved=false,lastTap=0,holdT=0;
   el.addEventListener('pointerdown',function(e){
     e.preventDefault();
     if(midi.learn){midi.learnK=d.k;toast('Move a MIDI controller');return}
-    pushUndo();el.setPointerCapture(e.pointerId);sy=e.clientY;sn=toN(d.k,P[d.k]);moved=false;
+    pushUndo();try{el.setPointerCapture(e.pointerId)}catch(x){}sy=e.clientY;sn=toN(d.k,P[d.k]);moved=false;
+    if(opt&&opt.macro){clearTimeout(holdT);holdT=setTimeout(function(){if(!moved){moved=true;openMacroPick(opt.macro,el)}},480)}
   });
   el.addEventListener('pointermove',function(e){
     if(!el.hasPointerCapture(e.pointerId))return;
-    var dy=sy-e.clientY;if(Math.abs(dy)>2)moved=true;
+    var dy=sy-e.clientY;if(Math.abs(dy)>6){moved=true;clearTimeout(holdT)}
     setParam(d.k,fromN(d.k,sn+dy/200));
   });
   el.addEventListener('pointerup',function(){
+    clearTimeout(holdT);
     if(moved)return;
     var now=performance.now();
     if(now-lastTap<320){setParam(d.k,d.def);lastTap=0}else lastTap=now;
@@ -53,10 +55,11 @@ function makeKnob(d){
     var s=e.key==='ArrowUp'||e.key==='ArrowRight'?.02:e.key==='ArrowDown'||e.key==='ArrowLeft'?-.02:0;
     if(s){setParam(d.k,fromN(d.k,toN(d.k,P[d.k])+s));e.preventDefault()}
   });
-  knobs[d.k]=K;K.update();
+  if(opt&&opt.macro)macroKnobs[opt.macro]={k:d.k,K:K};else knobs[d.k]=K;
+  K.update();
   return el;
 }
-$$('.kgrid').forEach(function(g){var ks=g.dataset.k.split(',');g.style.setProperty('--n',ks.length);ks.forEach(function(k){g.appendChild(makeKnob(D[k]))})});
+$$('.kgrid').forEach(function(g){if(!g.dataset.k)return;var ks=g.dataset.k.split(',');g.style.setProperty('--n',ks.length);ks.forEach(function(k){g.appendChild(makeKnob(D[k]))})});
 
 function setParam(k,v,quiet,force){
   var d=D[k];
@@ -64,6 +67,7 @@ function setParam(k,v,quiet,force){
   v=clamp(v,d.min,d.max);
   P[k]=v;
   if(knobs[k])knobs[k].update();
+  for(var mi in macroKnobs)if(macroKnobs[mi].k===k)macroKnobs[mi].K.update();
   apply(k);
   if(d.ui)d.ui();
   if(d.sys)sysSave();

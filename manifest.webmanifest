@@ -1,7 +1,7 @@
 {
   "name": "GRAINS",
   "short_name": "GRAINS",
-  "description": "Granular sampler for the browser \u00b7 EN / RU / ES",
+  "description": "Granular sampler for the browser \u00b7 EN / RU",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

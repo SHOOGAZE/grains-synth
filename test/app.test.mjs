@@ -48,7 +48,7 @@ async function open(w, h, { lang = 'en', tour = false } = {}) {
   await send('Emulation.setTouchEmulationEnabled', { enabled: true });
   await send('Page.navigate', { url: URL_ });
   await sleep(800);
-  await ev(`localStorage.clear();localStorage.setItem('grains.cfg.v1',JSON.stringify({acc:0,lang:${JSON.stringify(lang)},tips:'off'}));${tour ? '' : "localStorage.setItem('grains.tour','1');"}`);
+  await ev(`localStorage.clear();localStorage.setItem('grains.cfg.v1',JSON.stringify({acc:0,lang:${JSON.stringify(lang)},tips:'off',ui:'full'}));${tour ? '' : "localStorage.setItem('grains.tour','1');"}`);
   await send('Page.reload');
   await sleep(1500);
   await ev(`document.getElementById('startBtn').click()`);
@@ -331,5 +331,25 @@ for (const [w, h, lang, tag] of [[390, 844, 'en', 'p-en'], [360, 740, 'ru', 'p-r
 
 console.log('ERRORS', JSON.stringify(errors));
 const bad = res.filter(r => !r[0]);
+// macros: two knobs that follow a chosen target
+check('macros: two knobs, defaults CUTOFF and RESO', JSON.stringify(await ev(`[...document.querySelectorAll('#macros .knob .lbl')].map(e=>e.textContent)`)) === JSON.stringify(['M1 · CUTOFF', 'M2 · RESO']));
+await ev(`__g.setParam('m1t',1,true)`);
+check('macros: changing the target rebuilds the knob', (await ev(`document.querySelector('#macros .knob .lbl').textContent`)) === 'M1 · SPRAY');
+check('macros: target survives in a preset', (await ev(`__g.cleanPreset({n:'T',v:{m1t:3,m2t:99}}).v.m2t`)) === 17);
+
+// take-undo: a new take keeps the previous one, TAKE swaps back
+await ev(`(()=>{const g=__g.gest;g.ev=[{t:0,x:.1,y:.1,d:1},{t:1,x:.5,y:.5,d:0}];g.len=1.2;g.prev=null;document.querySelector('#gClr').click()})()`);
+check('take-undo: CLEAR keeps the take', (await ev(`__g.gest.ev.length===0&&!!__g.gest.prev&&!document.querySelector('#gUndo').disabled`)) === true);
+await ev(`document.querySelector('#gUndo').click()`);
+check('take-undo: TAKE restores it', (await ev(`__g.gest.ev.length===2&&__g.gest.len===1.2`)) === true);
+check('take-undo: disabled with nothing to restore', (await ev(`(()=>{__g.gest.prev=null;document.querySelector('#gRec').click();return true})()`)) === true);
+
+// interface level: simple hides MOD, SEQ, SAMPLE; full brings them back
+await ev(`document.querySelector('#levelChips .chip').click()`);
+check('level: simple hides MOD, SEQ and SAMPLE tabs', (await ev(`['mod','seq','sample'].every(t=>document.querySelector('nav#tabs button[data-t="'+t+'"]').offsetParent===null)`)) === true);
+check('level: simple keeps GRAIN and PLAY', (await ev(`['grain','play'].every(t=>document.querySelector('nav#tabs button[data-t="'+t+'"]').offsetParent!==null)`)) === true);
+await ev(`document.querySelectorAll('#levelChips .chip')[1].click()`);
+check('level: full shows them again', (await ev(`['mod','seq','sample'].every(t=>document.querySelector('nav#tabs button[data-t="'+t+'"]').offsetParent!==null)`)) === true);
+
 console.log('SUMMARY', res.length - bad.length, '/', res.length, 'passed');
 ws.close(); chrome.kill(); process.exit(bad.length || errors.length ? 1 : 0);

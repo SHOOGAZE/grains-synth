@@ -4,6 +4,7 @@ var LFO_SH=['SIN','TRI','SQR','SAW','S&H'],TGT=['pos','spray','size','dens','pit
 var fHzs=function(v){return v<1?v.toFixed(2)+'Hz':v.toFixed(1)+'Hz'};
 var fDiv=function(v){return '1/'+[4,8,16,32][v]};
 var fBpm=function(v){return Math.round(v)+' bpm'};
+var MT=['pos','spray','size','dens','pitch','detune','rev','shape','scan','width','atk','rel','cut','res','drive','delay','verb','level'];
 var DEFS=[
  {k:'pos',  label:'POSITION',def:.3, min:0,max:1,fmt:fPct},
  {k:'spray',label:'SPRAY',   def:.12,min:0,max:1,fmt:fPct},
@@ -39,6 +40,8 @@ var DEFS=[
  {k:'aon',   label:'ARP',     def:0,  min:0,max:1,kind:'int',fmt:function(v){return v?'ON':'OFF'}},
  {k:'amode', label:'MODE',    def:0,  min:0,max:4,kind:'int',fmt:function(v){return ['UP','DOWN','UP-DN','RAND','ORDER'][v]}},
  {k:'aoct',  label:'OCTAVES', def:1,  min:1,max:3,kind:'int',fmt:function(v){return v+' OCT'}},
+ {k:'m1t',label:'MACRO 1',def:12,min:0,max:17,kind:'int',fmt:function(v){return D[MT[v]].label},ui:function(){if(typeof buildMacro==='function')buildMacro(1)}},
+ {k:'m2t',label:'MACRO 2',def:13,min:0,max:17,kind:'int',fmt:function(v){return D[MT[v]].label},ui:function(){if(typeof buildMacro==='function')buildMacro(2)}},
  {k:'sroot', label:'ROOT',    def:0,  min:0,max:11,kind:'int',fmt:function(v){return ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'][v]},sys:true},
  {k:'stype', label:'SCALE',   def:0,  min:0,max:7,kind:'int',fmt:function(v){return ['CHROM','MAJOR','MINOR','DORIAN','PENT','MIN PENT','WHOLE','BLUES'][v]},sys:true}
 ];

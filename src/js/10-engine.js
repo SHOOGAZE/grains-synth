@@ -3,7 +3,7 @@ var hold=false,octave=0,touching=0,next=0,lastTick=0,wasActive=false,relUntil=0,
 var held=new Map(),grains=[],M={},modPrev={};
 var lfoPh=[0,0],lfoSH=[0,0],lfoV=[0,0];
 var seq={run:false,len:8,on:[1,0,1,1,0,1,0,1,1,0,1,1,0,1,1,0],n:[0,0,7,12,0,5,0,3,0,0,7,12,0,5,3,0]};
-var gest={ev:[],len:0,yk:'spray',rec:0,play:0,t0:0,tp:0,idx:0,down:0};
+var gest={prev:null,ev:[],len:0,yk:'spray',rec:0,play:0,t0:0,tp:0,idx:0,down:0};
 var midi={acc:null,learn:false,learnK:null,bend:0,sus:false,map:{1:'pos',74:'cut',71:'res',72:'size',73:'dens',91:'verb',93:'delay',10:'width',7:'level'}};
 var evs=[],stepping=false,stepT=0,stepI=0;
 if(SYS.seq&&SYS.seq.on&&SYS.seq.n){
@@ -106,9 +106,18 @@ function gUI(){
   r.textContent=gest.rec===2?'■ STOP':gest.rec===1?'ARMED':'● REC';
   r.classList.toggle('rec',gest.rec===2);r.classList.toggle('on',gest.rec===1);
   l.textContent=gest.play?'■ LOOP':'▶ LOOP';l.classList.toggle('on',!!gest.play);
+  var u=$('#gUndo');if(u)u.disabled=!gest.prev;
   i.textContent=gest.ev.length>1?'Gesture · '+gest.len.toFixed(1)+'s':'No gesture';
 }
-function gStartRec(k){gest.rec=2;gest.ev=[];gest.yk=k;gest.play=0;gest.down=0;gest.t0=performance.now()/1000;gUI()}
+function gKeep(){if(gest.ev.length>1)gest.prev={ev:gest.ev,len:gest.len}}
+function gUndoTake(){
+  if(!gest.prev||gest.rec===2){toast('No earlier take');return}
+  var c={ev:gest.ev,len:gest.len},p=gest.prev;
+  gest.ev=p.ev;gest.len=p.len;gest.prev=c.ev.length>1?c:null;
+  gest.play=gest.ev.length>1?1:0;gest.tp=ctx?ctx.currentTime:0;gest.idx=0;
+  sysSave();gUI();toast('Previous take restored');
+}
+function gStartRec(k){gKeep();gest.rec=2;gest.ev=[];gest.yk=k;gest.play=0;gest.down=0;gest.t0=performance.now()/1000;gUI()}
 function gPush(x,y,d){
   if(gest.rec!==2)return;
   var t=performance.now()/1000-gest.t0;

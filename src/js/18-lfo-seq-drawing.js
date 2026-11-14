@@ -46,7 +46,7 @@ function wireSeq(){
     if(c>=seq.len)return;
     seq.n[c]=clamp(quant(n),-12,12);seq.on[c]=1;sysSave();
   }
-  cv.addEventListener('pointerdown',function(e){e.preventDefault();cv.setPointerCapture(e.pointerId);on=true;paint(e)});
+  cv.addEventListener('pointerdown',function(e){e.preventDefault();try{cv.setPointerCapture(e.pointerId)}catch(x){};on=true;paint(e)});
   cv.addEventListener('pointermove',function(e){if(on)paint(e)});
   var up=function(){on=false};
   cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);

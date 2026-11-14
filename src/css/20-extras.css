@@ -4,7 +4,7 @@
 .btn.on{background:color-mix(in srgb,var(--accent) 13%,#0a0a0a);color:var(--accent-fg);border-color:var(--accent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 35%,transparent)}
 .btn:disabled{opacity:.35}
 nav#tabs{grid-template-columns:repeat(6,1fr);gap:0}
-nav#tabs button{font-size:9px;letter-spacing:.08em}
+nav#tabs button{font-size:10px;letter-spacing:.04em}
 #dock .pill{padding:0 10px;font-size:11.5px;letter-spacing:.08em;height:40px}
 #dock .stepper button{width:32px;height:38px}
 .stepper button{width:30px}
@@ -108,3 +108,79 @@ nav#tabs button{font-size:9px;letter-spacing:.08em}
   header#top label.hbtn{display:none}
   header#top .logo{margin-right:auto}
 }
+
+/* merged GRAIN + TONE on tablets and desktops */
+body.merged nav#tabs button[data-t="tone"]{display:none}
+@media(orientation:landscape){body.merged #v-grain.on{grid-template-rows:minmax(0,1fr) auto}}
+body.merged #v-grain>#v-tone{display:grid;grid-column:1/-1;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;height:auto;align-items:stretch}
+body.merged #v-grain>#v-tone .card{margin:0}
+@media(orientation:portrait){body.merged #cvMain{height:210px}body.merged #v-grain .hint{display:none}}
+body.merged #v-tone .wide{grid-column:auto}
+
+.mpick{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:16px}
+.mpbox{background:#101010;border:1px solid var(--line,#2a2a2a);border-radius:6px;padding:14px;max-width:420px;width:100%}
+.mph{font:700 11px var(--font-ui,inherit);letter-spacing:.16em;text-transform:uppercase;opacity:.7;margin-bottom:10px}
+
+/* glass: a lens over the displays. No backdrop-filter, only gradients, so it stays cheap on iPhone */
+.glass{position:relative;border-radius:6px;box-shadow:0 0 0 3px #0c0c0c,0 0 0 4px #000,0 1px 0 4px rgba(255,255,255,.07);--gx:30%;--gy:-8%;transition:--gx .3s ease-out,--gy .3s ease-out}
+.glass canvas.vis{border-color:#000;box-shadow:inset 0 3px 10px rgba(0,0,0,.9)}
+.glass::after{content:"";position:absolute;inset:1px;border-radius:5px;pointer-events:none;z-index:2;
+  border:1px solid rgba(255,255,255,.09);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.2),inset 0 0 22px rgba(255,255,255,.03);
+  background:radial-gradient(60% 90% at var(--gx) var(--gy),rgba(255,255,255,.14),rgba(255,255,255,0) 70%),
+    linear-gradient(112deg,rgba(255,255,255,.07) 0,rgba(255,255,255,.02) 34%,rgba(255,255,255,0) 35%,rgba(255,255,255,0) 62%,rgba(255,255,255,.03) 63%,rgba(255,255,255,0) 80%)}
+.glass::before{content:"";position:absolute;left:8px;right:8px;top:2px;height:1px;z-index:3;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.4) var(--gx),transparent 90%)}
+@property --gx{syntax:'<percentage>';inherits:true;initial-value:30%}
+@property --gy{syntax:'<percentage>';inherits:true;initial-value:-8%}
+@media(prefers-reduced-motion:reduce){.glass{transition:none}}
+
+/* seating: displays sit in a double rim, main buttons catch a thin light on top */
+.oled{box-shadow:inset 0 2px 6px #000c,0 0 0 3px #0c0c0c,0 0 0 4px #000,0 1px 0 4px rgba(255,255,255,.07)}
+.btn,.hbtn{box-shadow:inset 0 1px 0 rgba(255,255,255,.07)}
+.btn.pri,.btn.rec{box-shadow:none}
+
+/* panels are plain: the dot grid stays on the OLED only */
+.card{background-image:none}
+/* simple level: GRAIN, TONE, PLAY */
+body.simple nav#tabs button[data-t="mod"],body.simple nav#tabs button[data-t="seq"],body.simple nav#tabs button[data-t="sample"]{display:none}
+body.simple nav#tabs{grid-template-columns:repeat(3,1fr)}
+
+/* touch targets: the small header and octave buttons keep their look but answer to a 44px tall area */
+.hbtn,#octM,#octP,#pPrev,#pNext,#presetBtn{position:relative}
+.hbtn::before,#octM::before,#octP::before,#pPrev::before,#pNext::before,#presetBtn::before{content:"";position:absolute;left:-2px;right:-2px;top:50%;height:44px;transform:translateY(-50%)}
+#octM::before,#octP::before{left:-6px;right:-6px}
+
+/* tablet upright: the three tone cards are narrow, so their knobs sit two by two and stay finger sized */
+@media (orientation:portrait) and (min-width:700px) and (max-width:1000px){
+  body.merged #v-tone .kgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 6px}
+  body.merged #cvMain{height:150px}
+  body.merged .knob{max-width:84px}body.merged .knob svg{max-width:74px}
+  body.merged .kgrid{gap:8px 8px}
+  body.merged #v-grain.on{gap:10px}
+}
+/* very narrow screens (folded phones): the dock row must still show the octave buttons */
+@media(max-width:330px){#dock{gap:4px}#dock .pill{padding:0 7px;letter-spacing:.04em}.stepper button{width:26px}.stepper span{min-width:40px;font-size:10px;letter-spacing:.02em}}
+
+/* octave buttons: wider, the label gives up the room (phones only, tablets set their own sizes) */
+@media (min-width:331px) and (max-width:699px){#dock .stepper button{width:42px}#dock .stepper span{min-width:44px}}
+/* the octave stepper never gives up its buttons; on narrow phones the dock pills tighten instead (Russian labels are longer) */
+#dock .stepper{flex:none}
+@media(max-width:420px){#dock .pill{padding:0 8px;letter-spacing:.05em;min-width:0}#dock{gap:5px}}
+@media (min-width:331px) and (max-width:400px){#dock .stepper button{width:36px}#dock .stepper span{min-width:40px;letter-spacing:.02em}}
+/* header screen: the text block and the scope share one centre line */
+.oled{align-items:center}
+
+/* DOT TEXT: the source element stays in the page for readers and tests but takes no room; a canvas shows the dots */
+.dotsrc{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;white-space:nowrap!important;margin:0!important;padding:0!important;border:0!important}
+.dotcv{display:block;flex:none;max-width:100%}
+
+/* unified OLED panel (same box in GRAINS, ELEPHANT, BEHEMOTH) */
+.oled{height:56px;padding:0 10px;gap:10px}
+.oled .l1{font-size:9.5px;letter-spacing:.1em}
+.oled .l2{margin-top:3px}
+.oled canvas{width:112px;height:40px}
+@media(max-width:360px){.oled canvas{width:72px}}
+.oled .dotcv{align-self:flex-start}
+@media(min-width:820px){.oled{height:64px;padding:0 14px}.oled canvas{width:140px;height:44px}}
+@media(orientation:landscape) and (max-height:540px){.oled{height:46px}.oled canvas{width:96px;height:32px}}

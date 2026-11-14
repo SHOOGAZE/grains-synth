@@ -13,7 +13,7 @@ with sync_playwright() as p:
     b=p.chromium.launch(args=['--autoplay-policy=no-user-gesture-required'])
     for name,(w,h),tab,js in S:
         c=b.new_context(viewport={'width':w,'height':h},device_scale_factor=2,has_touch=True,is_mobile=True)
-        pg=c.new_page(); pg.add_init_script("localStorage.setItem('grains.cfg.v1',JSON.stringify({tips:'off'}))"); pg.goto('file://'+D+'index.html'); pg.wait_for_timeout(600)
+        pg=c.new_page(); pg.add_init_script("localStorage.setItem('grains.tour','1');localStorage.setItem('grains.cfg.v1',JSON.stringify({tips:'off',ui:'full'}))"); pg.goto('file://'+D+'index.html'); pg.wait_for_timeout(600)
         try: pg.locator('#startBtn').click(timeout=1500)
         except Exception: pg.mouse.click(w//2,h//2)
         pg.wait_for_timeout(1800)

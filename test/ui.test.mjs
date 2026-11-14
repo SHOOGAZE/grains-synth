@@ -48,7 +48,7 @@ async function open(w, h, { lang = 'en', tour = false } = {}) {
   await send('Emulation.setTouchEmulationEnabled', { enabled: true });
   await send('Page.navigate', { url: URL_ });
   await sleep(800);
-  await ev(`localStorage.clear();localStorage.setItem('grains.cfg.v1',JSON.stringify({acc:0,lang:${JSON.stringify(lang)},tips:'off'}));${tour ? '' : "localStorage.setItem('grains.tour','1');"}`);
+  await ev(`localStorage.clear();localStorage.setItem('grains.cfg.v1',JSON.stringify({acc:0,lang:${JSON.stringify(lang)},tips:'off',ui:'full'}));${tour ? '' : "localStorage.setItem('grains.tour','1');"}`);
   await send('Page.reload');
   await sleep(1500);
   await ev(`document.getElementById('startBtn').click()`);
@@ -91,7 +91,7 @@ await tp('touchEnd', []);
 await ev(`__g.reg.a=0;__g.reg.b=1;`);
 // i18n leftovers
 const scan = async (lang) => {
-  await ev(`localStorage.setItem('grains.cfg.v1',JSON.stringify({acc:0,lang:'${lang}',tips:'off'}))`);
+  await ev(`localStorage.setItem('grains.cfg.v1',JSON.stringify({acc:0,lang:'${lang}',tips:'off',ui:'full'}))`);
   await send('Page.reload'); await sleep(1500); await ev(`document.getElementById('startBtn').click()`); await sleep(1500);
   const out = {};
   for (const t of ['grain','tone','mod','play','seq','sample']) {

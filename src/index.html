@@ -16,6 +16,10 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="GRAINS">
 <meta name="theme-color" content="#0a0a0a">
+<meta name="description" content="Granular sampler for the browser. One HTML file, works offline on phone and tablet.">
+<meta property="og:title" content="GRAINS">
+<meta property="og:description" content="Granular sampler for the browser. One HTML file, works offline on phone and tablet.">
+<meta property="og:type" content="website">
 <title>GRAINS</title>
 <style>
 <!--@css-->
@@ -29,7 +33,7 @@
     <button class="hbtn sq" id="redoBtn" type="button" aria-label="Redo" disabled><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14l5-5-5-5"/><path d="M20 9H10a6 6 0 000 12h3"/></svg></button>
     <label class="hbtn" for="file">LOAD</label>
     <button class="hbtn" id="recBtn" type="button">● REC</button>
-    <button class="hbtn sq" id="menuBtn" type="button" aria-label="Menu">≡</button>
+    <button class="hbtn sq" id="menuBtn" type="button" aria-label="Menu"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     <div class="pgroup">
       <button class="pnav" id="pPrev" type="button" aria-label="Previous preset"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
       <button id="presetBtn" type="button"><span id="pName">CLOUD</span><i>▾</i></button>
@@ -46,7 +50,7 @@
     <section class="view on" id="v-grain">
       <div class="card wide">
         <h3>Sample<span class="sp"></span></h3>
-        <canvas class="vis" id="cvMain"></canvas>
+        <div class="glass"><canvas class="vis" id="cvMain"></canvas></div>
         <div class="hint">Drag: X = position · Y = spray (up = wider)</div>
       </div>
       <div class="card wide"><h3>Grain</h3><div class="kgrid" data-k="pos,spray,size,dens,pitch,detune,rev,shape"></div></div>
@@ -101,7 +105,7 @@
         <div class="chips tight" id="seqBar"></div>
         <div class="lab">Length</div><div class="chips tight" id="seqLen"></div>
         <div class="steps" id="steps"></div>
-        <canvas class="vis" id="cvSeq"></canvas>
+        <div class="glass"><canvas class="vis" id="cvSeq"></canvas></div>
         <div class="hint">Tap a step to switch it · drag in the grid to set its note · keys transpose</div>
       </div>
     </section>
@@ -109,7 +113,7 @@
     <section class="view" id="v-play">
       <div class="card wide">
         <h3>Surface</h3>
-        <canvas class="vis" id="cvSurf"></canvas>
+        <div class="glass"><canvas class="vis" id="cvSurf"></canvas></div>
         <div class="hint">X = position</div>
       </div>
       <div class="card wide">
@@ -117,8 +121,11 @@
         <div class="chips" id="yChips"></div>
         <div class="snaps" id="snaps"></div>
         <div class="hint">Tap: recall · hold: store</div>
+        <div class="lab gest">Macros</div>
+        <div class="kgrid" id="macros" style="--n:2"></div>
+        <div class="hint">Hold a knob to choose what it controls</div>
         <div class="lab gest">Gesture</div>
-        <div class="btns" id="gRow"><button class="btn" id="gRec" type="button">● REC</button><button class="btn" id="gLoop" type="button">▶ LOOP</button><button class="btn" id="gClr" type="button">CLEAR</button></div>
+        <div class="btns" id="gRow"><button class="btn" id="gRec" type="button">● REC</button><button class="btn" id="gLoop" type="button">▶ LOOP</button><button class="btn" id="gUndo" type="button" disabled>↶ TAKE</button><button class="btn" id="gClr" type="button">CLEAR</button></div>
         <div class="hint" id="gInfo">No gesture</div>
       </div>
     </section>
@@ -134,7 +141,7 @@
       </div>
       <div class="card wide" id="edCard">
         <h3>Edit</h3>
-        <canvas class="vis" id="cvEdit"></canvas>
+        <div class="glass"><canvas class="vis" id="cvEdit"></canvas></div>
         <div class="note" id="edInfo" style="margin-top:8px"></div>
         <div class="tools" id="edTools"></div>
         <div class="hint">Drag the handles: loop region · swipe: select · pinch: zoom · double-tap: reset zoom</div>
@@ -158,7 +165,7 @@
     <div class="kbd" id="kbd"></div>
   </div>
 
-  <nav id="tabs">
+  <nav id="tabs" role="tablist" aria-label="Screens">
     <button class="on" data-t="grain" type="button">GRAIN</button>
     <button data-t="tone" type="button">TONE</button>
     <button data-t="mod" type="button">MOD</button>
@@ -172,7 +179,7 @@
 <div id="start"><canvas id="dust"></canvas><div class="big" aria-label="GRAINS">GRAINS</div><div class="err" id="startErr"></div><i class="hz" id="startHz">touch anywhere to start · headphones recommended</i><button id="startBtn" type="button" aria-label="Touch to start"></button></div>
 <div id="toast" role="status"></div>
 <div class="sheetbg" id="mbg"></div>
-<div class="sheet" id="msheet"><div class="grab"></div><h2>MENU<button class="hbtn" id="mClose" type="button" style="height:30px">CLOSE</button></h2><div class="sbody" id="mbody">
+<div class="sheet" id="msheet"><div class="grab"></div><h2>MENU<button class="hbtn" id="mClose" type="button" aria-label="Close" style="height:30px;width:36px;padding:0"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></h2><div class="sbody" id="mbody">
       <div class="card">
         <h3>MIDI</h3>
         <div class="btns"><button class="btn" id="midiBtn" type="button">ENABLE MIDI</button><button class="btn" id="learnBtn" type="button">LEARN</button></div>
@@ -190,6 +197,7 @@
       </div>
       <div class="card">
         <h3>Interface</h3>
+        <div class="lab">Level</div><div class="chips" id="levelChips"></div>
         <div class="lab">Text size</div><div class="chips" id="textChips"></div>
         <div class="lab">Contrast</div><div class="chips" id="contrastChips"></div>
         <button class="btn" id="uiReset" type="button" style="width:100%;margin-top:14px">Reset interface</button>
@@ -201,7 +209,7 @@
       </div>
 </div></div>
 <div class="sheetbg" id="sbg"></div>
-<div class="sheet" id="sheet"><div class="grab"></div><h2>PRESETS<button class="hbtn" id="sClose" type="button" style="height:30px">CLOSE</button></h2><div class="sbody"><div class="savebox"><input id="pnameIn" type="text" placeholder="Name" maxlength="24"><button class="btn" id="pSave" type="button">SAVE</button></div><div class="savebox"><button class="btn" id="pExport" type="button" style="flex:1">EXPORT</button><button class="btn" id="pImport" type="button" style="flex:1">IMPORT</button></div><input id="pFile" type="file" accept=".json,application/json" hidden><div class="plist" id="plist"></div></div></div>
+<div class="sheet" id="sheet"><div class="grab"></div><h2>PRESETS<button class="hbtn" id="sClose" type="button" aria-label="Close" style="height:30px;width:36px;padding:0"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></h2><div class="sbody"><div class="savebox"><input id="pnameIn" type="text" placeholder="Name" maxlength="24"><button class="btn" id="pSave" type="button">SAVE</button></div><div class="savebox"><button class="btn" id="pExport" type="button" style="flex:1">EXPORT</button><button class="btn" id="pImport" type="button" style="flex:1">IMPORT</button></div><input id="pFile" type="file" accept=".json,application/json" hidden><div class="plist" id="plist"></div></div></div>
 
 <script>
 (function(){

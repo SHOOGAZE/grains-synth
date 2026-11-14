@@ -79,7 +79,8 @@ function buildGesture(){
     if(gest.ev.length<2){toast('Record a gesture first');return}
     gest.play=gest.play?0:1;gest.tp=ctx.currentTime;gest.idx=0;gUI();
   });
-  $('#gClr').addEventListener('click',function(){gest.ev=[];gest.len=0;gest.play=0;gest.rec=0;gest.down=0;sysSave();gUI()});
+  $('#gUndo').addEventListener('click',gUndoTake);
+  $('#gClr').addEventListener('click',function(){gKeep();gest.ev=[];gest.len=0;gest.play=0;gest.rec=0;gest.down=0;sysSave();gUI()});
   gUI();
 }
 

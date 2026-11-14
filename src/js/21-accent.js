@@ -9,7 +9,8 @@ function applyAccent(hex){
   s.setProperty('--accent-glow','rgba('+r+','+g+','+b+',.45)');
 }
 var cfg=store('grains.cfg.v1')||{acc:0};
-cfg.lang=cfg.lang||'en';cfg.tips=cfg.tips||'on';
+cfg.lang=cfg.lang==='ru'?'ru':'en';cfg.tips=cfg.tips||'on';
+cfg.ui=cfg.ui==='full'?'full':'simple';
 cfg.text=cfg.text||'m';cfg.contrast=cfg.contrast||'normal';
 function applyCfg(){
   var r=document.documentElement;

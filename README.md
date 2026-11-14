@@ -24,7 +24,7 @@ Phone upright: GRAIN, TONE, MOD and PLAY tabs, SEQ, the SAMPLE tab, the finger-c
   <img src="screenshots/tutorial.png" width="24%" alt="Step-by-step tutorial">
 </p>
 
-Phone held sideways and a tablet: the tabs move to a side rail, the keys stay under the sample.
+Phone held sideways and a tablet: the tabs move to a side rail, the keys stay under the sample. On tablets and desktops the TONE knobs sit under GRAIN, so the whole voice is one screen.
 
 <p>
   <img src="screenshots/landscape.png" width="49%" alt="Landscape: Grain">
@@ -61,7 +61,8 @@ Phone held sideways and a tablet: the tabs move to a side rail, the keys stay un
 **Playing**
 - Keyboard with hold, octave shift and randomize
 - Scale quantization: 8 scales, any root; it also snaps the Y:PITCH axis of the touch surface
-- PLAY tab: a full-size touch surface (X = position, Y = spray, size, density, cutoff or pitch) and a gesture recorder that loops your finger movement
+- PLAY tab: a full-size touch surface (X = position, Y = spray, size, density, cutoff or pitch) and a gesture recorder that loops your finger movement; ↶ TAKE brings back the previous take after a re-record or CLEAR; the displays are covered by a thin black-and-white glass whose highlight follows your finger
+- Two macro knobs on the PLAY tab: hold one to choose what it controls (cutoff and reso by default, or any grain, tone or echo knob); the choice is saved in presets
 - 4 snapshots to jump between sounds, 11 factory presets and your own presets, which you can export and import as a `.json` file
 - MIDI input (Web MIDI): notes, pitch bend, sustain pedal, a default CC map and LEARN (tap a knob, then move a controller)
 
@@ -72,7 +73,7 @@ Phone held sideways and a tablet: the tabs move to a side rail, the keys stay un
 **Workflow**
 - Undo / redo for parameters, loop region and sample edits
 - Knobs: drag to turn, double-tap to reset
-- Interface languages: English (default), Russian and Spanish; choose it in ≡ → Language, or pick Auto to follow the browser language
+- Interface languages: English (default) and Russian; choose it in ≡ → Language
 - Step-by-step tutorial on first launch (replay it from ≡ → Play tutorial) and contextual tips on each tab
 - Portrait layout for phones, a full-width layout for tablets, landscape console layout (side rail, screens, keys) for wide screens; bar heights match BEHEMOTH and ELEPHANT
 - Interface settings: text size and contrast (≡ → Interface)

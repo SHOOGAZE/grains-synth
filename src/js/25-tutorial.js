@@ -1,6 +1,6 @@
 /* ---------------- tutorial: spotlight tour + one-time tips per screen ---------------- */
-var TOUR=[
- {title:'Welcome',text:'GRAINS is a granular sampler. It plays thousands of tiny grains of a sound to build clouds, textures and frozen moments. This short tour shows the essentials. Replay it any time from SAMPLE → Tutorial.'},
+var TOUR_ALL=[
+ {title:'Welcome',text:'GRAINS is a granular sampler. It plays thousands of tiny grains of a sound to build clouds, textures and frozen moments. This short tour shows the essentials. Replay it any time from ≡ → Tutorial.'},
  {sel:'#cvMain',tab:'grain',title:'Sample',text:'The sample, drawn as dots. Drag across it: left and right move the position grains are taken from, up and down widen the spray. The bright dots are the part being played.'},
  {sel:'#v-grain .kgrid',tab:'grain',title:'Grain settings',text:'SIZE is how long each grain lasts, DENSITY how many play per second. Short grains and high density give smooth textures, long and sparse ones stay recognisable. Drag a knob up or down, double-tap to reset it.'},
  {sel:'#dock',title:'Keys',text:'Tap the keys to play pitches, hold several for a chord cloud. HOLD keeps the cloud going by itself, FREEZE also locks the position, OCT shifts the octave and RND randomises the grain settings. The arrows at the top undo and redo.'},
@@ -19,6 +19,10 @@ var TOUR=[
 var tourEl=null;
 function tourStart(force){
   if(tourEl||(!force&&store('grains.tour')))return;
+  /* the simple level has no MOD, SEQ or SAMPLE screens: leave their steps out and say where they went */
+  var TOUR=TOUR_ALL;
+  if(isSimple())TOUR=TOUR_ALL.filter(function(t){return SIMPLE_OFF.indexOf(t.tab)<0}).map(function(t){
+    return t.sel==='#tabs'?{sel:t.sel,title:t.title,text:'GRAIN shapes the cloud. TONE adds scan, filter, envelope, echo and reverb. PLAY is a big touch surface with snapshots and gesture loops. For MOD, SEQ and the sample editor open ≡ and set Level to Full.'}:t});
   hideTip();
   var i=0,veil=document.createElement('div');veil.id='tour';
   veil.innerHTML='<div class="tspot"></div><div class="tcard"><b></b><p></p><div class="tdots"></div><div class="btns"><button class="btn" type="button" id="tSkip">Skip</button><button class="btn" type="button" id="tBack">Back</button><button class="btn pri" type="button" id="tNext">Next</button></div></div>';
@@ -73,7 +77,7 @@ function maybeTip(n){
   document.body.appendChild(tipEl);
   $('#tipOk').addEventListener('click',function(){seen[n]=1;store('grains.tipsSeen',seen);hideTip()});
   $('#tipOff').addEventListener('click',function(){
-    cfg.tips='off';store('grains.cfg.v1',cfg);hideTip();toast('Tips off — turn them on in SAMPLE');
+    cfg.tips='off';store('grains.cfg.v1',cfg);hideTip();toast('Tips off — turn them on in ≡');
     $$('#tipsChips .chip').forEach(function(x,k){x.classList.toggle('on',k===1)});
   });
   tipT=setTimeout(hideTip,14000);

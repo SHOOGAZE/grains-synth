@@ -16,6 +16,10 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="GRAINS">
 <meta name="theme-color" content="#0a0a0a">
+<meta name="description" content="Granular sampler for the browser. One HTML file, works offline on phone and tablet.">
+<meta property="og:title" content="GRAINS">
+<meta property="og:description" content="Granular sampler for the browser. One HTML file, works offline on phone and tablet.">
+<meta property="og:type" content="website">
 <title>GRAINS</title>
 <style>
 /* Layout: one-screen instrument. Header, OLED strip, scrolling module view, performance dock, bottom tab bar in thumb reach. */
@@ -48,7 +52,7 @@ header#top{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;padding:8p
 .oled .l1{font-size:11px;letter-spacing:.08em;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .oled .l2{font-size:20px;font-weight:500;margin-top:4px;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .oled .l3{font-size:10px;color:var(--dim);margin-top:3px;letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.oled canvas{width:118px;height:54px;display:block}
+.oled canvas{width:118px;height:40px;display:block}
 
 /* views */
 #views{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:0 2px 12px 0;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;scrollbar-width:none}
@@ -75,7 +79,7 @@ canvas.vis{width:100%;display:block;border-radius:5px;background:var(--oled);bor
 .knob .dot.on{fill:var(--accent)}
 .knob .cap{fill:#161616;stroke:#343434;stroke-width:1}
 .knob .ind{stroke:var(--accent);stroke-width:2.6;stroke-linecap:butt}
-.knob .lbl{font:700 9.5px var(--f);letter-spacing:.12em;color:var(--mute);margin-top:-2px;text-align:center;white-space:nowrap}
+.knob .lbl{font:700 10px var(--f);letter-spacing:.1em;color:var(--mute);margin-top:-2px;text-align:center;white-space:nowrap}
 .knob .vv{font-size:11px;min-height:15px;color:var(--fg)}
 .knob:focus-visible svg{filter:drop-shadow(0 0 6px var(--accent-glow))}
 
@@ -149,7 +153,7 @@ nav#tabs button.on::before{background:var(--accent-fg)}
 #start .big{position:absolute;opacity:0;pointer-events:none}
 #dust{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 @media(prefers-reduced-motion:reduce){#start .hz,.hbtn.rec,.btn.rec{animation:none}*{transition:none!important}}
-@media(max-height:640px){:root{--kbh:46px}#cvMain{height:120px}.oled{height:46px}}
+@media(max-height:640px){:root{--kbh:46px}#cvMain{height:120px}.oled{height:46px}.oled canvas{height:36px}}
 
 /* labels, primary button */
 .lab{font:700 10px var(--f);letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin:14px 0 6px}
@@ -175,7 +179,7 @@ nav#tabs button.on::before{background:var(--accent-fg)}
 /* ================= landscape: console layout (rail + screens + keys), same idea as BEHEMOTH ================= */
 @media (orientation:landscape) and (min-width:640px){
   body{padding-left:max(8px,env(safe-area-inset-left,0px));padding-right:max(8px,env(safe-area-inset-right,0px));padding-bottom:env(safe-area-inset-bottom,0px)}
-  #app{display:grid;max-width:none;column-gap:10px;grid-template-columns:104px minmax(0,1fr);grid-template-rows:auto auto minmax(0,1fr) auto;grid-template-areas:"top top" "rail oled" "rail views" "rail dock"}
+  #app{display:grid;max-width:none;column-gap:10px;grid-template-columns:108px minmax(0,1fr);grid-template-rows:auto auto minmax(0,1fr) auto;grid-template-areas:"top top" "rail oled" "rail views" "rail dock"}
   header#top{grid-area:top;flex-wrap:nowrap;padding:4px 0 6px;margin-bottom:6px}
   .logo{flex:none;font-size:15px;margin-right:4px}
   .pgroup{order:1;flex:1 1 0;max-width:460px;margin-left:8px}
@@ -205,7 +209,7 @@ nav#tabs button.on::before{background:var(--accent-fg)}
   .kgrid{grid-template-columns:repeat(var(--n,4),1fr);gap:6px 2px;flex:1;align-content:center}
   .knob{max-width:66px}
   .knob svg{max-width:54px}
-  .knob .lbl{font-size:8.5px;letter-spacing:.1em}
+  .knob .lbl{font-size:9.5px;letter-spacing:.06em}
   .knob .vv{font-size:10px;min-height:12px}
   #v-grain.on{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}
   #v-grain .kgrid{grid-template-columns:repeat(4,1fr)}
@@ -232,7 +236,7 @@ nav#tabs button.on::before{background:var(--accent-fg)}
 .btn.on{background:color-mix(in srgb,var(--accent) 13%,#0a0a0a);color:var(--accent-fg);border-color:var(--accent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 35%,transparent)}
 .btn:disabled{opacity:.35}
 nav#tabs{grid-template-columns:repeat(6,1fr);gap:0}
-nav#tabs button{font-size:9px;letter-spacing:.08em}
+nav#tabs button{font-size:10px;letter-spacing:.04em}
 #dock .pill{padding:0 10px;font-size:11.5px;letter-spacing:.08em;height:40px}
 #dock .stepper button{width:32px;height:38px}
 .stepper button{width:30px}
@@ -336,6 +340,82 @@ nav#tabs button{font-size:9px;letter-spacing:.08em}
   header#top label.hbtn{display:none}
   header#top .logo{margin-right:auto}
 }
+
+/* merged GRAIN + TONE on tablets and desktops */
+body.merged nav#tabs button[data-t="tone"]{display:none}
+@media(orientation:landscape){body.merged #v-grain.on{grid-template-rows:minmax(0,1fr) auto}}
+body.merged #v-grain>#v-tone{display:grid;grid-column:1/-1;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;height:auto;align-items:stretch}
+body.merged #v-grain>#v-tone .card{margin:0}
+@media(orientation:portrait){body.merged #cvMain{height:210px}body.merged #v-grain .hint{display:none}}
+body.merged #v-tone .wide{grid-column:auto}
+
+.mpick{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:16px}
+.mpbox{background:#101010;border:1px solid var(--line,#2a2a2a);border-radius:6px;padding:14px;max-width:420px;width:100%}
+.mph{font:700 11px var(--font-ui,inherit);letter-spacing:.16em;text-transform:uppercase;opacity:.7;margin-bottom:10px}
+
+/* glass: a lens over the displays. No backdrop-filter, only gradients, so it stays cheap on iPhone */
+.glass{position:relative;border-radius:6px;box-shadow:0 0 0 3px #0c0c0c,0 0 0 4px #000,0 1px 0 4px rgba(255,255,255,.07);--gx:30%;--gy:-8%;transition:--gx .3s ease-out,--gy .3s ease-out}
+.glass canvas.vis{border-color:#000;box-shadow:inset 0 3px 10px rgba(0,0,0,.9)}
+.glass::after{content:"";position:absolute;inset:1px;border-radius:5px;pointer-events:none;z-index:2;
+  border:1px solid rgba(255,255,255,.09);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.2),inset 0 0 22px rgba(255,255,255,.03);
+  background:radial-gradient(60% 90% at var(--gx) var(--gy),rgba(255,255,255,.14),rgba(255,255,255,0) 70%),
+    linear-gradient(112deg,rgba(255,255,255,.07) 0,rgba(255,255,255,.02) 34%,rgba(255,255,255,0) 35%,rgba(255,255,255,0) 62%,rgba(255,255,255,.03) 63%,rgba(255,255,255,0) 80%)}
+.glass::before{content:"";position:absolute;left:8px;right:8px;top:2px;height:1px;z-index:3;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.4) var(--gx),transparent 90%)}
+@property --gx{syntax:'<percentage>';inherits:true;initial-value:30%}
+@property --gy{syntax:'<percentage>';inherits:true;initial-value:-8%}
+@media(prefers-reduced-motion:reduce){.glass{transition:none}}
+
+/* seating: displays sit in a double rim, main buttons catch a thin light on top */
+.oled{box-shadow:inset 0 2px 6px #000c,0 0 0 3px #0c0c0c,0 0 0 4px #000,0 1px 0 4px rgba(255,255,255,.07)}
+.btn,.hbtn{box-shadow:inset 0 1px 0 rgba(255,255,255,.07)}
+.btn.pri,.btn.rec{box-shadow:none}
+
+/* panels are plain: the dot grid stays on the OLED only */
+.card{background-image:none}
+/* simple level: GRAIN, TONE, PLAY */
+body.simple nav#tabs button[data-t="mod"],body.simple nav#tabs button[data-t="seq"],body.simple nav#tabs button[data-t="sample"]{display:none}
+body.simple nav#tabs{grid-template-columns:repeat(3,1fr)}
+
+/* touch targets: the small header and octave buttons keep their look but answer to a 44px tall area */
+.hbtn,#octM,#octP,#pPrev,#pNext,#presetBtn{position:relative}
+.hbtn::before,#octM::before,#octP::before,#pPrev::before,#pNext::before,#presetBtn::before{content:"";position:absolute;left:-2px;right:-2px;top:50%;height:44px;transform:translateY(-50%)}
+#octM::before,#octP::before{left:-6px;right:-6px}
+
+/* tablet upright: the three tone cards are narrow, so their knobs sit two by two and stay finger sized */
+@media (orientation:portrait) and (min-width:700px) and (max-width:1000px){
+  body.merged #v-tone .kgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 6px}
+  body.merged #cvMain{height:150px}
+  body.merged .knob{max-width:84px}body.merged .knob svg{max-width:74px}
+  body.merged .kgrid{gap:8px 8px}
+  body.merged #v-grain.on{gap:10px}
+}
+/* very narrow screens (folded phones): the dock row must still show the octave buttons */
+@media(max-width:330px){#dock{gap:4px}#dock .pill{padding:0 7px;letter-spacing:.04em}.stepper button{width:26px}.stepper span{min-width:40px;font-size:10px;letter-spacing:.02em}}
+
+/* octave buttons: wider, the label gives up the room (phones only, tablets set their own sizes) */
+@media (min-width:331px) and (max-width:699px){#dock .stepper button{width:42px}#dock .stepper span{min-width:44px}}
+/* the octave stepper never gives up its buttons; on narrow phones the dock pills tighten instead (Russian labels are longer) */
+#dock .stepper{flex:none}
+@media(max-width:420px){#dock .pill{padding:0 8px;letter-spacing:.05em;min-width:0}#dock{gap:5px}}
+@media (min-width:331px) and (max-width:400px){#dock .stepper button{width:36px}#dock .stepper span{min-width:40px;letter-spacing:.02em}}
+/* header screen: the text block and the scope share one centre line */
+.oled{align-items:center}
+
+/* DOT TEXT: the source element stays in the page for readers and tests but takes no room; a canvas shows the dots */
+.dotsrc{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;white-space:nowrap!important;margin:0!important;padding:0!important;border:0!important}
+.dotcv{display:block;flex:none;max-width:100%}
+
+/* unified OLED panel (same box in GRAINS, ELEPHANT, BEHEMOTH) */
+.oled{height:56px;padding:0 10px;gap:10px}
+.oled .l1{font-size:9.5px;letter-spacing:.1em}
+.oled .l2{margin-top:3px}
+.oled canvas{width:112px;height:40px}
+@media(max-width:360px){.oled canvas{width:72px}}
+.oled .dotcv{align-self:flex-start}
+@media(min-width:820px){.oled{height:64px;padding:0 14px}.oled canvas{width:140px;height:44px}}
+@media(orientation:landscape) and (max-height:540px){.oled{height:46px}.oled canvas{width:96px;height:32px}}
 </style>
 </head>
 <body>
@@ -346,7 +426,7 @@ nav#tabs button{font-size:9px;letter-spacing:.08em}
     <button class="hbtn sq" id="redoBtn" type="button" aria-label="Redo" disabled><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14l5-5-5-5"/><path d="M20 9H10a6 6 0 000 12h3"/></svg></button>
     <label class="hbtn" for="file">LOAD</label>
     <button class="hbtn" id="recBtn" type="button">● REC</button>
-    <button class="hbtn sq" id="menuBtn" type="button" aria-label="Menu">≡</button>
+    <button class="hbtn sq" id="menuBtn" type="button" aria-label="Menu"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     <div class="pgroup">
       <button class="pnav" id="pPrev" type="button" aria-label="Previous preset"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
       <button id="presetBtn" type="button"><span id="pName">CLOUD</span><i>▾</i></button>
@@ -363,7 +443,7 @@ nav#tabs button{font-size:9px;letter-spacing:.08em}
     <section class="view on" id="v-grain">
       <div class="card wide">
         <h3>Sample<span class="sp"></span></h3>
-        <canvas class="vis" id="cvMain"></canvas>
+        <div class="glass"><canvas class="vis" id="cvMain"></canvas></div>
         <div class="hint">Drag: X = position · Y = spray (up = wider)</div>
       </div>
       <div class="card wide"><h3>Grain</h3><div class="kgrid" data-k="pos,spray,size,dens,pitch,detune,rev,shape"></div></div>
@@ -418,7 +498,7 @@ nav#tabs button{font-size:9px;letter-spacing:.08em}
         <div class="chips tight" id="seqBar"></div>
         <div class="lab">Length</div><div class="chips tight" id="seqLen"></div>
         <div class="steps" id="steps"></div>
-        <canvas class="vis" id="cvSeq"></canvas>
+        <div class="glass"><canvas class="vis" id="cvSeq"></canvas></div>
         <div class="hint">Tap a step to switch it · drag in the grid to set its note · keys transpose</div>
       </div>
     </section>
@@ -426,7 +506,7 @@ nav#tabs button{font-size:9px;letter-spacing:.08em}
     <section class="view" id="v-play">
       <div class="card wide">
         <h3>Surface</h3>
-        <canvas class="vis" id="cvSurf"></canvas>
+        <div class="glass"><canvas class="vis" id="cvSurf"></canvas></div>
         <div class="hint">X = position</div>
       </div>
       <div class="card wide">
@@ -434,8 +514,11 @@ nav#tabs button{font-size:9px;letter-spacing:.08em}
         <div class="chips" id="yChips"></div>
         <div class="snaps" id="snaps"></div>
         <div class="hint">Tap: recall · hold: store</div>
+        <div class="lab gest">Macros</div>
+        <div class="kgrid" id="macros" style="--n:2"></div>
+        <div class="hint">Hold a knob to choose what it controls</div>
         <div class="lab gest">Gesture</div>
-        <div class="btns" id="gRow"><button class="btn" id="gRec" type="button">● REC</button><button class="btn" id="gLoop" type="button">▶ LOOP</button><button class="btn" id="gClr" type="button">CLEAR</button></div>
+        <div class="btns" id="gRow"><button class="btn" id="gRec" type="button">● REC</button><button class="btn" id="gLoop" type="button">▶ LOOP</button><button class="btn" id="gUndo" type="button" disabled>↶ TAKE</button><button class="btn" id="gClr" type="button">CLEAR</button></div>
         <div class="hint" id="gInfo">No gesture</div>
       </div>
     </section>
@@ -451,7 +534,7 @@ nav#tabs button{font-size:9px;letter-spacing:.08em}
       </div>
       <div class="card wide" id="edCard">
         <h3>Edit</h3>
-        <canvas class="vis" id="cvEdit"></canvas>
+        <div class="glass"><canvas class="vis" id="cvEdit"></canvas></div>
         <div class="note" id="edInfo" style="margin-top:8px"></div>
         <div class="tools" id="edTools"></div>
         <div class="hint">Drag the handles: loop region · swipe: select · pinch: zoom · double-tap: reset zoom</div>
@@ -475,7 +558,7 @@ nav#tabs button{font-size:9px;letter-spacing:.08em}
     <div class="kbd" id="kbd"></div>
   </div>
 
-  <nav id="tabs">
+  <nav id="tabs" role="tablist" aria-label="Screens">
     <button class="on" data-t="grain" type="button">GRAIN</button>
     <button data-t="tone" type="button">TONE</button>
     <button data-t="mod" type="button">MOD</button>
@@ -489,7 +572,7 @@ nav#tabs button{font-size:9px;letter-spacing:.08em}
 <div id="start"><canvas id="dust"></canvas><div class="big" aria-label="GRAINS">GRAINS</div><div class="err" id="startErr"></div><i class="hz" id="startHz">touch anywhere to start · headphones recommended</i><button id="startBtn" type="button" aria-label="Touch to start"></button></div>
 <div id="toast" role="status"></div>
 <div class="sheetbg" id="mbg"></div>
-<div class="sheet" id="msheet"><div class="grab"></div><h2>MENU<button class="hbtn" id="mClose" type="button" style="height:30px">CLOSE</button></h2><div class="sbody" id="mbody">
+<div class="sheet" id="msheet"><div class="grab"></div><h2>MENU<button class="hbtn" id="mClose" type="button" aria-label="Close" style="height:30px;width:36px;padding:0"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></h2><div class="sbody" id="mbody">
       <div class="card">
         <h3>MIDI</h3>
         <div class="btns"><button class="btn" id="midiBtn" type="button">ENABLE MIDI</button><button class="btn" id="learnBtn" type="button">LEARN</button></div>
@@ -507,6 +590,7 @@ nav#tabs button{font-size:9px;letter-spacing:.08em}
       </div>
       <div class="card">
         <h3>Interface</h3>
+        <div class="lab">Level</div><div class="chips" id="levelChips"></div>
         <div class="lab">Text size</div><div class="chips" id="textChips"></div>
         <div class="lab">Contrast</div><div class="chips" id="contrastChips"></div>
         <button class="btn" id="uiReset" type="button" style="width:100%;margin-top:14px">Reset interface</button>
@@ -518,7 +602,7 @@ nav#tabs button{font-size:9px;letter-spacing:.08em}
       </div>
 </div></div>
 <div class="sheetbg" id="sbg"></div>
-<div class="sheet" id="sheet"><div class="grab"></div><h2>PRESETS<button class="hbtn" id="sClose" type="button" style="height:30px">CLOSE</button></h2><div class="sbody"><div class="savebox"><input id="pnameIn" type="text" placeholder="Name" maxlength="24"><button class="btn" id="pSave" type="button">SAVE</button></div><div class="savebox"><button class="btn" id="pExport" type="button" style="flex:1">EXPORT</button><button class="btn" id="pImport" type="button" style="flex:1">IMPORT</button></div><input id="pFile" type="file" accept=".json,application/json" hidden><div class="plist" id="plist"></div></div></div>
+<div class="sheet" id="sheet"><div class="grab"></div><h2>PRESETS<button class="hbtn" id="sClose" type="button" aria-label="Close" style="height:30px;width:36px;padding:0"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></h2><div class="sbody"><div class="savebox"><input id="pnameIn" type="text" placeholder="Name" maxlength="24"><button class="btn" id="pSave" type="button">SAVE</button></div><div class="savebox"><button class="btn" id="pExport" type="button" style="flex:1">EXPORT</button><button class="btn" id="pImport" type="button" style="flex:1">IMPORT</button></div><input id="pFile" type="file" accept=".json,application/json" hidden><div class="plist" id="plist"></div></div></div>
 
 <script>
 (function(){
@@ -545,6 +629,7 @@ var LFO_SH=['SIN','TRI','SQR','SAW','S&H'],TGT=['pos','spray','size','dens','pit
 var fHzs=function(v){return v<1?v.toFixed(2)+'Hz':v.toFixed(1)+'Hz'};
 var fDiv=function(v){return '1/'+[4,8,16,32][v]};
 var fBpm=function(v){return Math.round(v)+' bpm'};
+var MT=['pos','spray','size','dens','pitch','detune','rev','shape','scan','width','atk','rel','cut','res','drive','delay','verb','level'];
 var DEFS=[
  {k:'pos',  label:'POSITION',def:.3, min:0,max:1,fmt:fPct},
  {k:'spray',label:'SPRAY',   def:.12,min:0,max:1,fmt:fPct},
@@ -580,6 +665,8 @@ var DEFS=[
  {k:'aon',   label:'ARP',     def:0,  min:0,max:1,kind:'int',fmt:function(v){return v?'ON':'OFF'}},
  {k:'amode', label:'MODE',    def:0,  min:0,max:4,kind:'int',fmt:function(v){return ['UP','DOWN','UP-DN','RAND','ORDER'][v]}},
  {k:'aoct',  label:'OCTAVES', def:1,  min:1,max:3,kind:'int',fmt:function(v){return v+' OCT'}},
+ {k:'m1t',label:'MACRO 1',def:12,min:0,max:17,kind:'int',fmt:function(v){return D[MT[v]].label},ui:function(){if(typeof buildMacro==='function')buildMacro(1)}},
+ {k:'m2t',label:'MACRO 2',def:13,min:0,max:17,kind:'int',fmt:function(v){return D[MT[v]].label},ui:function(){if(typeof buildMacro==='function')buildMacro(2)}},
  {k:'sroot', label:'ROOT',    def:0,  min:0,max:11,kind:'int',fmt:function(v){return ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'][v]},sys:true},
  {k:'stype', label:'SCALE',   def:0,  min:0,max:7,kind:'int',fmt:function(v){return ['CHROM','MAJOR','MINOR','DORIAN','PENT','MIN PENT','WHOLE','BLUES'][v]},sys:true}
 ];
@@ -602,9 +689,9 @@ function arc(a0,a1,r){
   var s=p(a0),e=p(a1);
   return 'M'+s[0]+' '+s[1]+'A'+r+' '+r+' 0 '+((a1-a0)>180?1:0)+' 1 '+e[0]+' '+e[1];
 }
-var knobs={};
-function makeKnob(d){
-  var el=document.createElement('div');el.className='knob';el.tabIndex=0;
+var knobs={},macroKnobs={};
+function makeKnob(d,opt){
+  var el=document.createElement('div');el.className='knob';el.tabIndex=0;el.setAttribute('role','slider');el.setAttribute('aria-label',d.label);el.setAttribute('aria-valuemin','0');el.setAttribute('aria-valuemax','100');
   el.innerHTML='<svg viewBox="0 0 64 64"><circle class="cap" cx="32" cy="32" r="16"/><line class="ind" x1="32" y1="32" x2="32" y2="20"/></svg><div class="lbl"></div><div class="vv"></div>';
   var ind=$('.ind',el),svg=$('svg',el),cap=$('.cap',el),dots=[],di,dc,da,NS='http://www.w3.org/2000/svg';
   /* the value ring is made of 21 grains: lit up to the value, from zero for bipolar params */
@@ -615,7 +702,7 @@ function makeKnob(d){
     dc.setAttribute('r',di%5===0?'2.2':'1.5');
     svg.insertBefore(dc,cap);dots.push(dc);
   }
-  $('.lbl',el).textContent=d.label;
+  $('.lbl',el).textContent=opt&&opt.macro?'M'+opt.macro+' · '+d.label:d.label;
   var vv=$('.vv',el);
   var K={el:el,update:function(){
     var n=clamp(toN(d.k,P[d.k]),0,1),a=-135+270*n;
@@ -628,20 +715,22 @@ function makeKnob(d){
     var t=a*Math.PI/180;
     ind.setAttribute('x2',(32+13*Math.sin(t)).toFixed(2));
     ind.setAttribute('y2',(32-13*Math.cos(t)).toFixed(2));
-    var vs=d.fmt(P[d.k]);if(vv.textContent!==vs)vv.textContent=vs;
+    var vs=d.fmt(P[d.k]);if(vv.textContent!==vs){vv.textContent=vs;el.setAttribute('aria-valuenow',Math.round(n*100));el.setAttribute('aria-valuetext',vs)}
   }};
-  var sy=0,sn=0,moved=false,lastTap=0;
+  var sy=0,sn=0,moved=false,lastTap=0,holdT=0;
   el.addEventListener('pointerdown',function(e){
     e.preventDefault();
     if(midi.learn){midi.learnK=d.k;toast('Move a MIDI controller');return}
-    pushUndo();el.setPointerCapture(e.pointerId);sy=e.clientY;sn=toN(d.k,P[d.k]);moved=false;
+    pushUndo();try{el.setPointerCapture(e.pointerId)}catch(x){}sy=e.clientY;sn=toN(d.k,P[d.k]);moved=false;
+    if(opt&&opt.macro){clearTimeout(holdT);holdT=setTimeout(function(){if(!moved){moved=true;openMacroPick(opt.macro,el)}},480)}
   });
   el.addEventListener('pointermove',function(e){
     if(!el.hasPointerCapture(e.pointerId))return;
-    var dy=sy-e.clientY;if(Math.abs(dy)>2)moved=true;
+    var dy=sy-e.clientY;if(Math.abs(dy)>6){moved=true;clearTimeout(holdT)}
     setParam(d.k,fromN(d.k,sn+dy/200));
   });
   el.addEventListener('pointerup',function(){
+    clearTimeout(holdT);
     if(moved)return;
     var now=performance.now();
     if(now-lastTap<320){setParam(d.k,d.def);lastTap=0}else lastTap=now;
@@ -650,10 +739,11 @@ function makeKnob(d){
     var s=e.key==='ArrowUp'||e.key==='ArrowRight'?.02:e.key==='ArrowDown'||e.key==='ArrowLeft'?-.02:0;
     if(s){setParam(d.k,fromN(d.k,toN(d.k,P[d.k])+s));e.preventDefault()}
   });
-  knobs[d.k]=K;K.update();
+  if(opt&&opt.macro)macroKnobs[opt.macro]={k:d.k,K:K};else knobs[d.k]=K;
+  K.update();
   return el;
 }
-$$('.kgrid').forEach(function(g){var ks=g.dataset.k.split(',');g.style.setProperty('--n',ks.length);ks.forEach(function(k){g.appendChild(makeKnob(D[k]))})});
+$$('.kgrid').forEach(function(g){if(!g.dataset.k)return;var ks=g.dataset.k.split(',');g.style.setProperty('--n',ks.length);ks.forEach(function(k){g.appendChild(makeKnob(D[k]))})});
 
 function setParam(k,v,quiet,force){
   var d=D[k];
@@ -661,6 +751,7 @@ function setParam(k,v,quiet,force){
   v=clamp(v,d.min,d.max);
   P[k]=v;
   if(knobs[k])knobs[k].update();
+  for(var mi in macroKnobs)if(macroKnobs[mi].k===k)macroKnobs[mi].K.update();
   apply(k);
   if(d.ui)d.ui();
   if(d.sys)sysSave();
@@ -740,14 +831,24 @@ function initAudio(){
   gate.connect(dry);dry.connect(master);
   gate.connect(dly);dly.connect(dlp);dlp.connect(fb);fb.connect(dly);dlp.connect(dWet);dWet.connect(master);
   gate.connect(conv);conv.connect(vWet);vWet.connect(master);
-  master.connect(comp);comp.connect(ana);ana.connect(ctx.destination);
-  initCapture(comp);
+  /* safety limiter after the compressor: straight up to 0.8, then a soft knee, so nothing above full scale reaches the speakers or a recording */
+  var lim=ctx.createWaveShaper(),lc=new Float32Array(2049),li,lx,la;
+  for(li=0;li<2049;li++){lx=li/1024-1;la=Math.abs(lx);lc[li]=la<=.8?lx:(lx<0?-1:1)*(.8+.18*Math.tanh((la-.8)/.18))}
+  lim.curve=lc;lim.oversample='2x';
+  master.connect(comp);comp.connect(lim);lim.connect(ana);ana.connect(ctx.destination);
+  initCapture(lim);
   DEFS.forEach(function(d){apply(d.k)});
   ctx.resume();
   setInterval(tick,25);
   if(!buf)makeDemo(0);
 }
 
+
+/* coming back from the background, a phone call or a locked screen: the browser may leave the audio context suspended or "interrupted"; wake it on return and on the next touch */
+function wakeAudio(){if(ctx&&ctx.state!=='running'){try{var p=ctx.resume();if(p&&p.catch)p.catch(function(){})}catch(e){}}}
+document.addEventListener('visibilitychange',function(){if(!document.hidden)wakeAudio()});
+window.addEventListener('pageshow',wakeAudio);
+document.addEventListener('pointerdown',wakeAudio,true);
 /* ---------------- sample model, undo / redo ---------------- */
 var smp=null,reg={a:0,b:1},edView={v0:0,v1:1},edSnap=true;
 var undoS=[],redoS=[],lastPush=0;
@@ -1039,7 +1140,7 @@ var hold=false,octave=0,touching=0,next=0,lastTick=0,wasActive=false,relUntil=0,
 var held=new Map(),grains=[],M={},modPrev={};
 var lfoPh=[0,0],lfoSH=[0,0],lfoV=[0,0];
 var seq={run:false,len:8,on:[1,0,1,1,0,1,0,1,1,0,1,1,0,1,1,0],n:[0,0,7,12,0,5,0,3,0,0,7,12,0,5,3,0]};
-var gest={ev:[],len:0,yk:'spray',rec:0,play:0,t0:0,tp:0,idx:0,down:0};
+var gest={prev:null,ev:[],len:0,yk:'spray',rec:0,play:0,t0:0,tp:0,idx:0,down:0};
 var midi={acc:null,learn:false,learnK:null,bend:0,sus:false,map:{1:'pos',74:'cut',71:'res',72:'size',73:'dens',91:'verb',93:'delay',10:'width',7:'level'}};
 var evs=[],stepping=false,stepT=0,stepI=0;
 if(SYS.seq&&SYS.seq.on&&SYS.seq.n){
@@ -1142,9 +1243,18 @@ function gUI(){
   r.textContent=gest.rec===2?'■ STOP':gest.rec===1?'ARMED':'● REC';
   r.classList.toggle('rec',gest.rec===2);r.classList.toggle('on',gest.rec===1);
   l.textContent=gest.play?'■ LOOP':'▶ LOOP';l.classList.toggle('on',!!gest.play);
+  var u=$('#gUndo');if(u)u.disabled=!gest.prev;
   i.textContent=gest.ev.length>1?'Gesture · '+gest.len.toFixed(1)+'s':'No gesture';
 }
-function gStartRec(k){gest.rec=2;gest.ev=[];gest.yk=k;gest.play=0;gest.down=0;gest.t0=performance.now()/1000;gUI()}
+function gKeep(){if(gest.ev.length>1)gest.prev={ev:gest.ev,len:gest.len}}
+function gUndoTake(){
+  if(!gest.prev||gest.rec===2){toast('No earlier take');return}
+  var c={ev:gest.ev,len:gest.len},p=gest.prev;
+  gest.ev=p.ev;gest.len=p.len;gest.prev=c.ev.length>1?c:null;
+  gest.play=gest.ev.length>1?1:0;gest.tp=ctx?ctx.currentTime:0;gest.idx=0;
+  sysSave();gUI();toast('Previous take restored');
+}
+function gStartRec(k){gKeep();gest.rec=2;gest.ev=[];gest.yk=k;gest.play=0;gest.down=0;gest.t0=performance.now()/1000;gUI()}
 function gPush(x,y,d){
   if(gest.rec!==2)return;
   var t=performance.now()/1000-gest.t0;
@@ -1224,7 +1334,7 @@ function bindSurf(cv,yk,rec){
     if(rec)gPush(x,y,1);
   }
   cv.addEventListener('pointerdown',function(e){
-    cv.setPointerCapture(e.pointerId);
+    try{cv.setPointerCapture(e.pointerId)}catch(x){}
     if(!on){on=true;touching++;pushUndo();if(rec&&gest.rec===1)gStartRec(yk())}
     f(e);
   });
@@ -1320,13 +1430,34 @@ function frame(){
 
 /* ---------------- tabs ---------------- */
 var curTab='grain';
-function showTab(t){curTab=t;
-  $$('#tabs button').forEach(function(b){b.classList.toggle('on',b.dataset.t===t)});
+var merged=false;
+/* interface level: simple keeps GRAIN, TONE and PLAY; full adds MOD, SEQ and SAMPLE */
+var SIMPLE_OFF=['mod','seq','sample'];
+function isSimple(){return !!cfg&&cfg.ui!=='full'}
+function applyLevel(){document.body.classList.toggle('simple',isSimple());if(isSimple()&&SIMPLE_OFF.indexOf(curTab)>=0)showTab('grain')}
+function showTab(t){if(merged&&t==='tone')t='grain';if(isSimple()&&SIMPLE_OFF.indexOf(t)>=0)t='grain';curTab=t;
+  $$('#tabs button').forEach(function(b){var on=b.dataset.t===t;b.classList.toggle('on',on);b.setAttribute('role','tab');b.setAttribute('aria-selected',on?'true':'false')});
   $$('.view').forEach(function(v){v.classList.toggle('on',v.id==='v-'+t)});
   $('#views').scrollTop=0;
 }
 $$('#tabs button').forEach(function(b){b.addEventListener('click',function(){showTab(b.dataset.t);maybeTip(b.dataset.t)})});
 
+
+/* tablets and desktops: the TONE cards sit under GRAIN, one screen for the whole voice */
+(function(){
+  var mq=window.matchMedia('(min-width:700px) and (min-height:600px)');
+  function apply(){
+    var tone=$('#v-tone'),grain=$('#v-grain'),views=$('#views');
+    if(mq.matches===merged)return;
+    merged=mq.matches;
+    document.body.classList.toggle('merged',merged);
+    if(merged){grain.appendChild(tone);if(curTab==='tone')showTab('grain')}
+    else{views.insertBefore(tone,$('#v-mod'))}
+  }
+  apply();
+  if(mq.addEventListener)mq.addEventListener('change',apply);else mq.addListener(apply);
+})();
+$$('#tabs button').forEach(function(b){b.setAttribute('role','tab');b.setAttribute('aria-selected',b.classList.contains('on')?'true':'false')});
 /* ---------------- dock: hold, freeze, octave, keys, scale ---------------- */
 $('#hold').addEventListener('click',function(){initAudio();hold=!hold;$('#hold').classList.toggle('on',hold)});
 $('#freeze').addEventListener('click',function(){
@@ -1382,7 +1513,7 @@ function press(id,k){
   if(k){k.classList.add('on');held.set(id,quant(+k.dataset.n))}
   ptr.set(id,k||null);
 }
-kb.addEventListener('pointerdown',function(e){e.preventDefault();initAudio();kb.setPointerCapture(e.pointerId);press(e.pointerId,keyAt(e.clientX,e.clientY))});
+kb.addEventListener('pointerdown',function(e){e.preventDefault();initAudio();try{kb.setPointerCapture(e.pointerId)}catch(x){};press(e.pointerId,keyAt(e.clientX,e.clientY))});
 kb.addEventListener('pointermove',function(e){if(ptr.has(e.pointerId))press(e.pointerId,keyAt(e.clientX,e.clientY))});
 var kup=function(e){press(e.pointerId,null);ptr.delete(e.pointerId)};
 kb.addEventListener('pointerup',kup);kb.addEventListener('pointercancel',kup);
@@ -1772,7 +1903,7 @@ function wireSeq(){
     if(c>=seq.len)return;
     seq.n[c]=clamp(quant(n),-12,12);seq.on[c]=1;sysSave();
   }
-  cv.addEventListener('pointerdown',function(e){e.preventDefault();cv.setPointerCapture(e.pointerId);on=true;paint(e)});
+  cv.addEventListener('pointerdown',function(e){e.preventDefault();try{cv.setPointerCapture(e.pointerId)}catch(x){};on=true;paint(e)});
   cv.addEventListener('pointermove',function(e){if(on)paint(e)});
   var up=function(){on=false};
   cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
@@ -1859,10 +1990,125 @@ function buildGesture(){
     if(gest.ev.length<2){toast('Record a gesture first');return}
     gest.play=gest.play?0:1;gest.tp=ctx.currentTime;gest.idx=0;gUI();
   });
-  $('#gClr').addEventListener('click',function(){gest.ev=[];gest.len=0;gest.play=0;gest.rec=0;gest.down=0;sysSave();gUI()});
+  $('#gUndo').addEventListener('click',gUndoTake);
+  $('#gClr').addEventListener('click',function(){gKeep();gest.ev=[];gest.len=0;gest.play=0;gest.rec=0;gest.down=0;sysSave();gUI()});
   gUI();
 }
 
+/* ---------------- two macro knobs: hold one to choose what it controls ---------------- */
+var macroEl={};
+function buildMacro(i){
+  var host=$('#macros');if(!host)return;
+  var old=macroEl[i],nel=makeKnob(D[MT[P['m'+i+'t']]],{macro:i});
+  if(old&&old.parentNode)old.parentNode.replaceChild(nel,old);else host.appendChild(nel);
+  macroEl[i]=nel;
+}
+function openMacroPick(i,anchor){
+  closeMacroPick();
+  var bg=document.createElement('div');bg.id='mpick';bg.className='mpick';
+  var box=document.createElement('div');box.className='mpbox';
+  var h=document.createElement('div');h.className='mph';h.textContent='Macro '+i+' controls';box.appendChild(h);
+  var row=document.createElement('div');row.className='chips tight';
+  MT.forEach(function(k,ix){
+    var c=document.createElement('button');c.type='button';c.className='chip'+(P['m'+i+'t']===ix?' on':'');c.textContent=D[k].label;
+    c.addEventListener('click',function(){setParam('m'+i+'t',ix,true);closeMacroPick();toast('Macro '+i+' → '+D[k].label)});
+    row.appendChild(c);
+  });
+  box.appendChild(row);bg.appendChild(box);
+  bg.addEventListener('pointerdown',function(e){if(e.target===bg)closeMacroPick()});
+  document.body.appendChild(bg);
+}
+function closeMacroPick(){var e=$('#mpick');if(e)e.remove()}
+buildMacro(1);buildMacro(2);
+/* glass highlight follows the finger / pointer over a display */
+(function(){
+  var gl=document.querySelectorAll('.glass');
+  gl.forEach(function(g){
+    function mv(e){
+      var r=g.getBoundingClientRect();if(!r.width)return;
+      g.style.setProperty('--gx',Math.max(0,Math.min(100,(e.clientX-r.left)/r.width*100)).toFixed(0)+'%');
+      g.style.setProperty('--gy',Math.max(-10,Math.min(60,(e.clientY-r.top)/r.height*60-10)).toFixed(0)+'%');
+    }
+    g.addEventListener('pointermove',mv,{passive:true});
+    g.addEventListener('pointerdown',mv,{passive:true});
+  });
+})();
+/* DOT TEXT: a text element is shown as one dot-matrix line (5x7 glyphs, Latin and Cyrillic, no font file).
+   The element keeps its text, so readers, translations and tests are unaffected; only a canvas is painted instead. */
+var DOTF = (function () {
+  var g = {
+    'A': '01110 10001 10001 11111 10001 10001 10001', 'B': '11110 10001 10001 11110 10001 10001 11110', 'C': '01110 10001 10000 10000 10000 10001 01110',
+    'D': '11110 10001 10001 10001 10001 10001 11110', 'E': '11111 10000 10000 11110 10000 10000 11111', 'F': '11111 10000 10000 11110 10000 10000 10000',
+    'G': '01110 10001 10000 10111 10001 10001 01111', 'H': '10001 10001 10001 11111 10001 10001 10001', 'I': '01110 00100 00100 00100 00100 00100 01110',
+    'J': '00111 00010 00010 00010 00010 10010 01100', 'K': '10001 10010 10100 11000 10100 10010 10001', 'L': '10000 10000 10000 10000 10000 10000 11111',
+    'M': '10001 11011 10101 10101 10001 10001 10001', 'N': '10001 11001 10101 10011 10001 10001 10001', 'O': '01110 10001 10001 10001 10001 10001 01110',
+    'P': '11110 10001 10001 11110 10000 10000 10000', 'Q': '01110 10001 10001 10001 10101 10010 01101', 'R': '11110 10001 10001 11110 10100 10010 10001',
+    'S': '01111 10000 10000 01110 00001 00001 11110', 'T': '11111 00100 00100 00100 00100 00100 00100', 'U': '10001 10001 10001 10001 10001 10001 01110',
+    'V': '10001 10001 10001 10001 10001 01010 00100', 'W': '10001 10001 10001 10101 10101 11011 10001', 'X': '10001 10001 01010 00100 01010 10001 10001',
+    'Y': '10001 10001 01010 00100 00100 00100 00100', 'Z': '11111 00001 00010 00100 01000 10000 11111',
+    '0': '01110 10001 10011 10101 11001 10001 01110', '1': '00100 01100 00100 00100 00100 00100 01110', '2': '01110 10001 00001 00010 00100 01000 11111',
+    '3': '11110 00001 00001 01110 00001 00001 11110', '4': '00010 00110 01010 10010 11111 00010 00010', '5': '11111 10000 11110 00001 00001 10001 01110',
+    '6': '00110 01000 10000 11110 10001 10001 01110', '7': '11111 00001 00010 00100 01000 01000 01000', '8': '01110 10001 10001 01110 10001 10001 01110',
+    '9': '01110 10001 10001 01111 00001 00010 01100',
+    'Б': '11111 10000 10000 11110 10001 10001 11110', 'Г': '11111 10000 10000 10000 10000 10000 10000', 'Д': '00110 01010 01010 01010 01010 11111 10001',
+    'Ё': '01010 11111 10000 11110 10000 10000 11111', 'Ж': '10101 10101 10101 01110 10101 10101 10101', 'З': '01110 10001 00001 00110 00001 10001 01110',
+    'И': '10001 10001 10011 10101 11001 10001 10001', 'Й': '01010 00100 10001 10011 10101 11001 10001', 'Л': '00111 01001 01001 01001 01001 01001 10001',
+    'П': '11111 10001 10001 10001 10001 10001 10001', 'У': '10001 10001 10001 01111 00001 10001 01110', 'Ф': '00100 01110 10101 10101 10101 01110 00100',
+    'Ц': '10010 10010 10010 10010 10010 11111 00001', 'Ч': '10001 10001 10001 01111 00001 00001 00001', 'Ш': '10101 10101 10101 10101 10101 10101 11111',
+    'Щ': '10101 10101 10101 10101 10101 11111 00001', 'Ъ': '11000 01000 01000 01110 01001 01001 01110', 'Ы': '10001 10001 10001 11001 10101 10101 11001',
+    'Ь': '10000 10000 10000 11110 10001 10001 11110', 'Э': '01110 10001 00001 00111 00001 10001 01110', 'Ю': '10010 10101 10101 11101 10101 10101 10010',
+    'Я': '01111 10001 10001 01111 00101 01001 10001',
+    ' ': '00000 00000 00000 00000 00000 00000 00000', '.': '00000 00000 00000 00000 00000 01100 01100', ',': '00000 00000 00000 00000 01100 00100 01000',
+    ':': '00000 01100 01100 00000 01100 01100 00000', ';': '00000 01100 01100 00000 01100 00100 01000', '!': '00100 00100 00100 00100 00100 00000 00100',
+    '?': '01110 10001 00001 00010 00100 00000 00100', '-': '00000 00000 00000 11111 00000 00000 00000', '+': '00000 00100 00100 11111 00100 00100 00000',
+    '=': '00000 00000 11111 00000 11111 00000 00000', '/': '00001 00010 00010 00100 01000 01000 10000', '%': '11001 11010 00010 00100 01000 01011 10011',
+    '(': '00010 00100 01000 01000 01000 00100 00010', ')': '01000 00100 00010 00010 00010 00100 01000', '\'': '00100 00100 01000 00000 00000 00000 00000',
+    '"': '01010 01010 00000 00000 00000 00000 00000', '_': '00000 00000 00000 00000 00000 00000 11111', '#': '01010 01010 11111 01010 11111 01010 01010',
+    '*': '00000 10101 01110 11111 01110 10101 00000', '<': '00010 00100 01000 10000 01000 00100 00010', '>': '01000 00100 00010 00001 00010 00100 01000',
+    '~': '00000 00000 01000 10101 00010 00000 00000', '·': '00000 00000 00000 00100 00000 00000 00000', '×': '00000 10001 01010 00100 01010 10001 00000',
+    '…': '00000 00000 00000 00000 00000 00000 10101', '▸': '01000 01100 01110 01111 01110 01100 01000', '●': '00000 01110 11111 11111 11111 01110 00000'
+  };
+  var alias = { 'А': 'A', 'В': 'B', 'Е': 'E', 'К': 'K', 'М': 'M', 'Н': 'H', 'О': 'O', 'Р': 'P', 'С': 'C', 'Т': 'T', 'Х': 'X', '–': '-', '—': '-', '•': '·', '−': '-', '’': '\'', ' ': ' ' };
+  var out = {}, k;
+  for (k in g) out[k] = g[k].split(' ');
+  for (k in alias) out[k] = out[alias[k]];
+  return out;
+})();
+function dotText(src, opt) {
+  opt = opt || {};
+  if (!src || src._dot) return;
+  var cv = document.createElement('canvas'), pending = 0, last = '';
+  cv.className = 'dotcv'; cv.setAttribute('aria-hidden', 'true');
+  src.classList.add('dotsrc'); src._dot = cv; src.parentNode.insertBefore(cv, src.nextSibling);
+  function avail() {
+    var p = src.parentNode, cs = getComputedStyle(p), w = p.clientWidth - (parseFloat(cs.paddingLeft) || 0) - (parseFloat(cs.paddingRight) || 0), i, c, gap = parseFloat(cs.columnGap) || 0;
+    if (cs.display.indexOf('flex') >= 0 && cs.flexDirection.indexOf('column') < 0) for (i = 0; i < p.children.length; i++) { c = p.children[i]; if (c !== cv && c !== src && c.offsetWidth) w -= c.offsetWidth + gap; }
+    return Math.max(20, w);
+  }
+  function draw() {
+    pending = 0;
+    var t = (src.textContent || '').replace(/\s+/g, ' ').trim().toUpperCase(), cs = getComputedStyle(src), fs = parseFloat(cs.fontSize) || 16, d = window.devicePixelRatio || 1,
+      pitch = Math.max(1.8, Math.min(opt.max || 4, fs * (opt.k || 0.17))), av = avail(), n = t.length, cols = n * 6 - 1, maxChars, i, j, y, x, gl, ctx, W, H, r, on, off, key;
+    if (cols * pitch > av) { pitch = av / cols; if (pitch < 1.8) { pitch = 1.8; maxChars = Math.max(1, Math.floor((av / pitch + 1) / 6)); t = t.slice(0, Math.max(0, maxChars - 1)) + '…'; n = t.length; cols = n * 6 - 1; } }
+    key = t + '|' + pitch.toFixed(2) + '|' + cs.color + '|' + d; if (key === last) return; last = key;
+    W = Math.max(1, Math.ceil(cols * pitch)); H = Math.ceil(7 * pitch);
+    cv.width = Math.ceil(W * d); cv.height = Math.ceil(H * d); cv.style.width = W + 'px'; cv.style.height = H + 'px'; cv.style.marginTop = cs.marginTop;
+    ctx = cv.getContext('2d'); ctx.clearRect(0, 0, cv.width, cv.height); r = pitch * 0.4 * d; on = cs.color; off = 'rgba(255,255,255,.06)';
+    for (i = 0; i < n; i++) {
+      gl = DOTF[t.charAt(i)] || DOTF['?'];
+      for (y = 0; y < 7; y++) for (x = 0; x < 5; x++) {
+        ctx.fillStyle = gl[y].charAt(x) === '1' ? on : off; ctx.beginPath(); ctx.arc((i * 6 + x + .5) * pitch * d, (y + .5) * pitch * d, r, 0, 6.2832); ctx.fill();
+      }
+    }
+  }
+  function soon() { if (!pending) pending = requestAnimationFrame(draw); }
+  new MutationObserver(soon).observe(src, { childList: true, characterData: true, subtree: true });
+  window.addEventListener('resize', soon); window.addEventListener('orientationchange', soon);
+  if (window.ResizeObserver) new ResizeObserver(soon).observe(src.parentNode);
+  draw();
+}
+
+dotText($('#l2'),{k:.1,max:2.5});
 /* ---------------- MIDI ---------------- */
 function midiStatus(t){$('#midiInfo').textContent=t}
 function midiBind(){
@@ -1908,7 +2154,8 @@ function applyAccent(hex){
   s.setProperty('--accent-glow','rgba('+r+','+g+','+b+',.45)');
 }
 var cfg=store('grains.cfg.v1')||{acc:0};
-cfg.lang=cfg.lang||'en';cfg.tips=cfg.tips||'on';
+cfg.lang=cfg.lang==='ru'?'ru':'en';cfg.tips=cfg.tips||'on';
+cfg.ui=cfg.ui==='full'?'full':'simple';
 cfg.text=cfg.text||'m';cfg.contrast=cfg.contrast||'normal';
 function applyCfg(){
   var r=document.documentElement;
@@ -1964,220 +2211,208 @@ applyAccent(ACCENTS[cfg.acc]?ACCENTS[cfg.acc][1]:ACCENTS[0][1]);
   requestAnimationFrame(loop);
 })();
 
-/* ---------------- translations: English text in the DOM, swept into ru / es (same idea as BEHEMOTH) ---------------- */
+/* ---------------- translations: English text in the DOM, swept into ru (same idea as BEHEMOTH) ---------------- */
 var TR=[
  /* chrome */
- ['Load','Файл','Abrir'],['● REC','● ЗАПИСЬ','● GRABAR'],['■ STOP','■ СТОП','■ PARAR'],
- ['No sample','Нет сэмпла','Sin muestra'],['Drag knobs','Тяни ручки','Arrastra perillas'],['Double-tap to reset','Двойной тап — сброс','Doble toque: restablecer'],
- ['Demo','Демо','Demo'],['Mono','Моно','Mono'],['Stereo','Стерео','Estéreo'],
+ ['Load','Файл'],['● REC','● ЗАПИСЬ'],['■ STOP','■ СТОП'],
+ ['No sample','Нет сэмпла'],['Drag knobs','Тяни ручки'],['Double-tap to reset','Двойной тап — сброс'],
+ ['Demo','Демо'],['Mono','Моно'],['Stereo','Стерео'],
  /* cards */
- ['Sample','Сэмпл','Muestra'],['Grain','Зерно','Grano'],['Motion','Движение','Movimiento'],['Envelope','Огибающая','Envolvente'],
- ['Filter','Фильтр','Filtro'],['Output','Выход','Salida'],['Echo','Эхо','Eco'],['Space','Пространство','Espacio'],
- ['Surface','Поверхность','Superficie'],['Controls','Управление','Controles'],['Source','Источник','Fuente'],['Display','Дисплей','Pantalla'],
- ['About','О приложении','Acerca de'],['Settings','Настройки','Ajustes'],['Language','Язык','Idioma'],['Tips','Подсказки','Consejos'],
- ['Tutorial','Туториал','Tutorial'],['Interface','Интерфейс','Interfaz'],['Text size','Размер текста','Tamaño de texto'],['Contrast','Контраст','Contraste'],
+ ['Sample','Сэмпл'],['Grain','Зерно'],['Motion','Движение'],['Envelope','Огибающая'],
+ ['Filter','Фильтр'],['Output','Выход'],['Echo','Эхо'],['Space','Пространство'],
+ ['Surface','Поверхность'],['Controls','Управление'],['Source','Источник'],['Display','Дисплей'],
+ ['About','О приложении'],['Settings','Настройки'],['Language','Язык'],['Tips','Подсказки'],
+ ['Tutorial','Туториал'],['Interface','Интерфейс'],['Text size','Размер текста'],['Contrast','Контраст'],
  
- ['Normal','Обычный','Normal'],['Large','Крупный','Grande'],['High','Высокий','Alto'],
- ['Reset interface','Сбросить интерфейс','Restablecer interfaz'],['Interface reset','Интерфейс сброшен','Interfaz restablecida'],
- ['EXPORT','ЭКСПОРТ','EXPORTAR'],['IMPORT','ИМПОРТ','IMPORTAR'],['DRIVE','ДРАЙВ','DRIVE'],
- ['No user presets to export','Нет своих пресетов для экспорта','No hay presets propios para exportar'],['Not a GRAINS preset file','Это не файл пресетов GRAINS','No es un archivo de presets de GRAINS'],['Play tutorial','Пройти туториал','Ver tutorial'],['Auto','Авто','Auto'],['On','Вкл','Sí'],['Off','Выкл','No'],
- ['Drag: X = position · Y = spray (up = wider)','Тяни: X = позиция · Y = разброс (выше = шире)','Arrastra: X = posición · Y = dispersión (arriba = más ancha)'],
- ['X = position','X = позиция','X = posición'],
- ['Tap: recall · hold: store','Тап: вызвать · удержание: сохранить','Toque: recuperar · mantener: guardar'],
- ['Y: SPRAY','Y: РАЗБРОС','Y: ESPARCIR'],['Y: SIZE','Y: РАЗМЕР','Y: TAMAÑO'],['Y: DENSITY','Y: ПЛОТНОСТЬ','Y: DENSIDAD'],['Y: CUTOFF','Y: СРЕЗ','Y: CORTE'],['Y: PITCH','Y: ВЫСОТА','Y: ALTURA'],
+ ['Normal','Обычный'],['Large','Крупный'],['High','Высокий'],
+ ['↶ TAKE','↶ ДУБЛЬ'],['Level','Уровень'],['Simple','Простой'],['Full','Полный'],['Simple interface','Простой интерфейс'],['Full interface','Полный интерфейс'],
+ ['Reset interface','Сбросить интерфейс'],['Interface reset','Интерфейс сброшен'],
+ ['EXPORT','ЭКСПОРТ'],['IMPORT','ИМПОРТ'],['DRIVE','ДРАЙВ'],
+ ['No user presets to export','Нет своих пресетов для экспорта'],['Not a GRAINS preset file','Это не файл пресетов GRAINS'],['Play tutorial','Пройти туториал'],['Auto','Авто'],['On','Вкл'],['Off','Выкл'],
+ ['Drag: X = position · Y = spray (up = wider)','Тяни: X = позиция · Y = разброс (выше = шире)'],
+ ['X = position','X = позиция'],
+ ['Tap: recall · hold: store','Тап: вызвать · удержание: сохранить'],
+ ['Y: SPRAY','Y: РАЗБРОС'],['Y: SIZE','Y: РАЗМЕР'],['Y: DENSITY','Y: ПЛОТНОСТЬ'],['Y: CUTOFF','Y: СРЕЗ'],['Y: PITCH','Y: ВЫСОТА'],
  /* knobs */
- ['Position','Позиция','Posición'],['Spray','Разброс','Esparcir'],['Size','Размер','Tamaño'],['Density','Плотность','Densidad'],['Pitch','Высота','Altura'],
- ['Detune','Детюн','Desafin.'],['Reverse','Реверс','Inverso'],['Shape','Форма','Forma'],['Scan','Скан','Barrido'],['Width','Ширина','Ancho'],
- ['Attack','Атака','Ataque'],['Release','Спад','Caída'],['Cutoff','Срез','Corte'],['Reso','Резон.','Reson.'],['Level','Уровень','Nivel'],
- ['D.TIME','ЭХО ВР.','T. ECO'],['D.FEEDB','ЭХО ОС','FB ECO'],['Delay','Эхо','Eco'],['Reverb','Реверб','Reverb'],
+ ['Position','Позиция'],['Spray','Разброс'],['Size','Размер'],['Density','Плотность'],['Pitch','Высота'],
+ ['Detune','Детюн'],['Reverse','Реверс'],['Shape','Форма'],['Scan','Скан'],['Width','Ширина'],
+ ['Attack','Атака'],['Release','Спад'],['Cutoff','Срез'],['Reso','Резон.'],['Level','Уровень'],
+ ['D.TIME','ЭХО ВР.'],['D.FEEDB','ЭХО ОС'],['Delay','Эхо'],['Reverb','Реверб'],
  /* dock, nav */
- ['Hold','Держать','Mantener'],['RND','СЛУЧ','ALEA'],['Tone','Тон','Tono'],['Play','Игра','Tocar'],
- ['Octave down','Октава вниз','Octava abajo'],['Octave up','Октава вверх','Octava arriba'],['Previous preset','Предыдущий пресет','Preset anterior'],['Next preset','Следующий пресет','Preset siguiente'],
+ ['Hold','Держать'],['RND','СЛУЧ'],['Tone','Тон'],['Play','Игра'],
+ ['Octave down','Октава вниз'],['Octave up','Октава вверх'],['Previous preset','Предыдущий пресет'],['Next preset','Следующий пресет'],
  /* sample tab */
- ['No sample loaded.','Сэмпл не загружен.','Ninguna muestra cargada.'],
- ['Load any audio file, or record from the microphone. Short loops and sustained sounds make the best clouds.','Загрузи любой аудиофайл или запиши звук с микрофона. Лучше всего облака получаются из коротких лупов и протяжных звуков.','Carga cualquier archivo de audio o graba con el micrófono. Los bucles cortos y los sonidos sostenidos dan las mejores nubes.'],
- ['Granular sampler. Position and spray choose where grains come from, size and density shape the cloud, scan moves through the sample. Hold several keys for a chord cloud.','Гранулярный сэмплер. Позиция и разброс определяют, откуда берутся зёрна, размер и плотность формируют облако, скан двигается по сэмплу. Зажми несколько клавиш — получится аккордовое облако.','Sampler granular. Posición y dispersión eligen de dónde salen los granos, tamaño y densidad dan forma a la nube y el barrido recorre la muestra. Mantén varias teclas para una nube de acordes.'],
- ['White','Белый','Blanco'],['Silver','Серебро','Plata'],['Dim','Тусклый','Tenue'],
+ ['No sample loaded.','Сэмпл не загружен.'],
+ ['Load any audio file, or record from the microphone. Short loops and sustained sounds make the best clouds.','Загрузи любой аудиофайл или запиши звук с микрофона. Лучше всего облака получаются из коротких лупов и протяжных звуков.'],
+ ['Granular sampler. Position and spray choose where grains come from, size and density shape the cloud, scan moves through the sample. Hold several keys for a chord cloud.','Гранулярный сэмплер. Позиция и разброс определяют, откуда берутся зёрна, размер и плотность формируют облако, скан двигается по сэмплу. Зажми несколько клавиш — получится аккордовое облако.'],
+ ['White','Белый'],['Silver','Серебро'],['Dim','Тусклый'],
  /* presets, snapshots */
- ['Presets','Пресеты','Presets'],['Close','Закрыть','Cerrar'],['Save','Сохранить','Guardar'],['Name','Имя','Nombre'],['Factory','Заводской','De fábrica'],['User','Мой','Usuario'],['Random','Случайный','Aleatorio'],
- ['Cloud','Облако','Nube'],['Stretch','Растяжка','Estirado'],['Freeze','Заморозка','Congelado'],['Shimmer','Мерцание','Brillo'],['Glitch','Глитч','Glitch'],['Rain','Дождь','Lluvia'],['Sub drift','Саб-дрейф','Sub deriva'],['Dust','Пыль','Polvo'],
- ['Stored','Сохранён','Guardada'],['Empty','Пусто','Vacía'],
+ ['Presets','Пресеты'],['Close','Закрыть'],['Save','Сохранить'],['Name','Имя'],['Factory','Заводской'],['User','Мой'],['Random','Случайный'],
+ ['Cloud','Облако'],['Stretch','Растяжка'],['Freeze','Заморозка'],['Shimmer','Мерцание'],['Glitch','Глитч'],['Rain','Дождь'],['Sub drift','Саб-дрейф'],['Dust','Пыль'],
+ ['Stored','Сохранён'],['Empty','Пусто'],
  /* toasts, splash */
- ['Audio running','Звук запущен','Audio en marcha'],['Could not decode that file','Не удалось прочитать файл','No se pudo decodificar el archivo'],
- ['Recording… tap again to stop','Идёт запись… нажми ещё раз, чтобы остановить','Grabando… toca de nuevo para parar'],
- ['Recording is not available here','Запись здесь недоступна','La grabación no está disponible aquí'],['Microphone unavailable','Микрофон недоступен','Micrófono no disponible'],
- ['Tips off — turn them on in SAMPLE','Подсказки выключены — включи их во вкладке СЭМПЛ','Consejos desactivados — actívalos en MUESTRA'],
- ['touch anywhere to start','коснись экрана, чтобы начать','toca la pantalla para empezar'],['headphones recommended','лучше в наушниках','se recomiendan auriculares'],['starting audio…','запускаю звук…','iniciando audio…'],
+ ['Audio running','Звук запущен'],['Could not decode that file','Не удалось прочитать файл'],
+ ['Recording… tap again to stop','Идёт запись… нажми ещё раз, чтобы остановить'],
+ ['Recording is not available here','Запись здесь недоступна'],['Microphone unavailable','Микрофон недоступен'],
+ ['Tips off — turn them on in ≡','Подсказки выключены — включи их в меню ≡'],
+ ['touch anywhere to start','коснись экрана, чтобы начать'],['headphones recommended','лучше в наушниках'],['starting audio…','запускаю звук…'],
+ ['Macros','Макросы'],['Hold a knob to choose what it controls','Удерживай ручку, чтобы выбрать, чем она управляет'],['Macro 1 controls','Макрос 1 управляет'],['Macro 2 controls','Макрос 2 управляет'],
  /* tour */
- ['Skip','Пропустить','Omitir'],['Back','Назад','Atrás'],['Next','Далее','Siguiente'],['Done','Готово','Listo'],['Got it','Понятно','Entendido'],['Turn off tips','Выключить подсказки','Desactivar consejos'],
- ['Welcome','Добро пожаловать','Bienvenido'],['Grain settings','Настройки зёрен','Ajustes del grano'],['Keys','Клавиши','Teclas'],['Screens','Экраны','Pantallas'],['Sound source','Источник звука','Fuente de sonido'],['Landscape','Горизонтальный режим','Modo horizontal'],
- ['GRAINS is a granular sampler. It plays thousands of tiny grains of a sound to build clouds, textures and frozen moments. This short tour shows the essentials. Replay it any time from SAMPLE → Tutorial.',
-  'GRAINS — гранулярный сэмплер. Он проигрывает тысячи крошечных зёрен звука и складывает из них облака, текстуры и «замороженные» моменты. Короткий тур покажет главное. Его можно пройти снова в любой момент: СЭМПЛ → Туториал.',
-  'GRAINS es un sampler granular. Reproduce miles de granos diminutos de un sonido para crear nubes, texturas y momentos congelados. Este breve recorrido muestra lo esencial. Puedes repetirlo cuando quieras desde MUESTRA → Tutorial.'],
+ ['Skip','Пропустить'],['Back','Назад'],['Next','Далее'],['Done','Готово'],['Got it','Понятно'],['Turn off tips','Выключить подсказки'],
+ ['Welcome','Добро пожаловать'],['Grain settings','Настройки зёрен'],['Keys','Клавиши'],['Screens','Экраны'],['Sound source','Источник звука'],['Landscape','Горизонтальный режим'],
+ ['GRAINS is a granular sampler. It plays thousands of tiny grains of a sound to build clouds, textures and frozen moments. This short tour shows the essentials. Replay it any time from ≡ → Tutorial.',
+  'GRAINS — гранулярный сэмплер. Он проигрывает тысячи крошечных зёрен звука и складывает из них облака, текстуры и «замороженные» моменты. Короткий тур покажет главное. Его можно пройти снова в любой момент: ≡ → Туториал.'],
  ['The sample, drawn as dots. Drag across it: left and right move the position grains are taken from, up and down widen the spray. The bright dots are the part being played.',
-  'Сэмпл, нарисованный точками. Води пальцем: влево-вправо двигает позицию, откуда берутся зёрна, вверх-вниз расширяет разброс. Яркие точки — та часть, что сейчас играет.',
-  'La muestra, dibujada con puntos. Arrastra sobre ella: izquierda y derecha mueven la posición de donde salen los granos, arriba y abajo amplían la dispersión. Los puntos brillantes son la parte que suena.'],
+  'Сэмпл, нарисованный точками. Води пальцем: влево-вправо двигает позицию, откуда берутся зёрна, вверх-вниз расширяет разброс. Яркие точки — та часть, что сейчас играет.'],
  ['SIZE is how long each grain lasts, DENSITY how many play per second. Short grains and high density give smooth textures, long and sparse ones stay recognisable. Drag a knob up or down, double-tap to reset it.',
-  'РАЗМЕР — длина каждого зерна, ПЛОТНОСТЬ — сколько зёрен играет в секунду. Короткие зёрна и высокая плотность дают гладкие текстуры, длинные и редкие остаются узнаваемыми. Тяни ручку вверх или вниз, двойной тап сбрасывает значение.',
-  'TAMAÑO es la duración de cada grano y DENSIDAD cuántos suenan por segundo. Granos cortos y mucha densidad dan texturas suaves; largos y escasos siguen siendo reconocibles. Arrastra una perilla arriba o abajo y toca dos veces para restablecerla.'],
+  'РАЗМЕР — длина каждого зерна, ПЛОТНОСТЬ — сколько зёрен играет в секунду. Короткие зёрна и высокая плотность дают гладкие текстуры, длинные и редкие остаются узнаваемыми. Тяни ручку вверх или вниз, двойной тап сбрасывает значение.'],
  ['Tap the keys to play pitches, hold several for a chord cloud. HOLD keeps the cloud going by itself, OCT shifts the octave and RND randomises the grain settings.',
-  'Нажимай клавиши, чтобы менять высоту, зажми несколько — получится аккордовое облако. ДЕРЖАТЬ оставляет облако звучать само, ОКТ сдвигает октаву, СЛУЧ случайно меняет настройки зёрен.',
-  'Toca las teclas para tocar notas y mantén varias para una nube de acordes. MANTENER deja la nube sonando sola, OCT cambia la octava y ALEA aleatoriza los ajustes de los granos.'],
+  'Нажимай клавиши, чтобы менять высоту, зажми несколько — получится аккордовое облако. ДЕРЖАТЬ оставляет облако звучать само, ОКТ сдвигает октаву, СЛУЧ случайно меняет настройки зёрен.'],
  ['Tap the name to browse presets or save your own, or use the arrows to step through them.',
-  'Нажми на название, чтобы открыть список пресетов или сохранить свой, либо листай стрелками.',
-  'Toca el nombre para ver los presets o guardar el tuyo, o avanza con las flechas.'],
+  'Нажми на название, чтобы открыть список пресетов или сохранить свой, либо листай стрелками.'],
  ['GRAIN shapes the cloud. TONE adds scan, filter, envelope, echo and reverb. PLAY is a big touch surface with four snapshots. SAMPLE loads or records sound and holds the settings.',
-  'ЗЕРНО формирует облако. ТОН добавляет скан, фильтр, огибающую, эхо и реверб. ИГРА — большая сенсорная поверхность с четырьмя снимками. СЭМПЛ загружает и записывает звук, здесь же настройки.',
-  'GRANO da forma a la nube. TONO añade barrido, filtro, envolvente, eco y reverb. TOCAR es una gran superficie táctil con cuatro escenas. MUESTRA carga o graba sonido y reúne los ajustes.'],
+  'ЗЕРНО формирует облако. ТОН добавляет скан, фильтр, огибающую, эхо и реверб. ИГРА — большая сенсорная поверхность с четырьмя снимками. СЭМПЛ загружает и записывает звук, здесь же настройки.'],
  ['SCAN moves the position through the sample by itself. Slow values stretch the sound in time, zero freezes the cloud in place.',
-  'СКАН сам двигает позицию по сэмплу. Малые значения растягивают звук во времени, ноль замораживает облако на месте.',
-  'BARRIDO mueve la posición por la muestra por sí solo. Valores lentos estiran el sonido en el tiempo; cero congela la nube en su sitio.'],
+  'СКАН сам двигает позицию по сэмплу. Малые значения растягивают звук во времени, ноль замораживает облако на месте.'],
  ['Touch the surface to play. X is the position, Y controls the parameter chosen below it. Hold a SNAP pad to store all settings, tap it to recall them.',
-  'Касайся поверхности, чтобы играть. X — позиция, Y управляет параметром, выбранным ниже. Удержи пэд СНИМОК, чтобы сохранить все настройки, тапни — чтобы вызвать их.',
-  'Toca la superficie para tocar. X es la posición e Y controla el parámetro elegido debajo. Mantén un pad ESCENA para guardar todos los ajustes y tócalo para recuperarlos.'],
+  'Касайся поверхности, чтобы играть. X — позиция, Y управляет параметром, выбранным ниже. Удержи пэд СНИМОК, чтобы сохранить все настройки, тапни — чтобы вызвать их.'],
  ['LOAD brings in any audio file, REC records from the microphone. Short loops and sustained sounds make the best clouds.',
-  'ФАЙЛ загружает любой аудиофайл, ЗАПИСЬ пишет с микрофона. Лучше всего облака получаются из коротких лупов и протяжных звуков.',
-  'ABRIR carga cualquier archivo de audio y GRABAR graba con el micrófono. Los bucles cortos y los sonidos sostenidos dan las mejores nubes.'],
+  'ФАЙЛ загружает любой аудиофайл, ЗАПИСЬ пишет с микрофона. Лучше всего облака получаются из коротких лупов и протяжных звуков.'],
  ['Turn the phone sideways for the wide layout: the screens move to a rail on the left and the keys stay under the sample.',
-  'Поверни телефон горизонтально — получится широкий режим: экраны переедут на панель слева, а клавиши останутся внизу.',
-  'Gira el teléfono para el modo horizontal: las pantallas pasan a una barra a la izquierda y las teclas quedan debajo.'],
+  'Поверни телефон горизонтально — получится широкий режим: экраны переедут на панель слева, а клавиши останутся внизу.'],
  /* tips */
  ['Drag the sample to choose where grains come from. Short SIZE and high DENSITY make smooth clouds; add SPRAY for texture.',
-  'Води по сэмплу, чтобы выбрать, откуда берутся зёрна. Малый РАЗМЕР и высокая ПЛОТНОСТЬ дают гладкие облака, РАЗБРОС добавляет фактуру.',
-  'Arrastra por la muestra para elegir de dónde salen los granos. TAMAÑO corto y DENSIDAD alta dan nubes suaves; añade ESPARCIR para dar textura.'],
+  'Води по сэмплу, чтобы выбрать, откуда берутся зёрна. Малый РАЗМЕР и высокая ПЛОТНОСТЬ дают гладкие облака, РАЗБРОС добавляет фактуру.'],
  ['SCAN drifts through the sample on its own. The filter, echo and reverb then shape the cloud.',
-  'СКАН сам дрейфует по сэмплу. Фильтр, эхо и реверб потом лепят облако.',
-  'BARRIDO recorre la muestra por sí solo. Después el filtro, el eco y la reverb dan forma a la nube.'],
+  'СКАН сам дрейфует по сэмплу. Фильтр, эхо и реверб потом лепят облако.'],
  ['Touch the surface to play. Hold a SNAP pad to store the current sound, tap it to recall.',
-  'Касайся поверхности, чтобы играть. Удержи пэд СНИМОК, чтобы сохранить текущий звук, тапни — чтобы вызвать.',
-  'Toca la superficie para tocar. Mantén un pad ESCENA para guardar el sonido actual y tócalo para recuperarlo.'],
+  'Касайся поверхности, чтобы играть. Удержи пэд СНИМОК, чтобы сохранить текущий звук, тапни — чтобы вызвать.'],
  ['Load an audio file or record your own. Sustained sounds and short loops work best.',
-  'Загрузи аудиофайл или запиши свой звук. Лучше всего подходят протяжные звуки и короткие лупы.',
-  'Carga un archivo de audio o graba el tuyo. Los sonidos sostenidos y los bucles cortos funcionan mejor.'],
- ["Undo", "Отмена", "Deshacer"],
- ["Redo", "Повтор", "Rehacer"],
- ["Mod", "Мод", "Mod"],
- ["Seq", "Секв", "Sec"],
- ["■ LOOP", "■ ПЕТЛЯ", "■ BUCLE"],
- ["▶ LOOP", "▶ ПЕТЛЯ", "▶ BUCLE"],
- ["Edit", "Правка", "Editar"],
- ["Export", "Экспорт", "Exportar"],
- ["Gesture", "Жест", "Gesto"],
- ["Target", "Цель", "Destino"],
- ["Scale", "Строй", "Escala"],
- ["Root", "Тоника", "Tónica"],
- ["Tempo", "Темп", "Tempo"],
- ["Rate", "Скорость", "Velocidad"],
- ["Arpeggiator", "Арпеджиатор", "Arpegiador"],
- ["Sequencer", "Секвенсор", "Secuenciador"],
- ["Mode", "Режим", "Modo"],
- ["Octaves", "Октавы", "Octavas"],
- ["Length", "Длина", "Longitud"],
- ["Grab last", "Захват", "Capturar"],
- ["Demo sounds", "Демо-звуки", "Sonidos demo"],
- ["Gate", "Гейт", "Gate"],
- ["Sin", "Син", "Sin"],
- ["Tri", "Треуг", "Tri"],
- ["Sqr", "Квадр", "Cuad"],
- ["Saw", "Пила", "Sierra"],
- ["S&H", "S&H", "S&H"],
- ["Pos", "Поз", "Pos"],
- ["Dens", "Плотн", "Dens"],
- ["Cut", "Срез", "Corte"],
- ["Rev", "Реверс", "Inv"],
- ["Chrom", "Хром", "Crom"],
- ["Major", "Мажор", "Mayor"],
- ["Minor", "Минор", "Menor"],
- ["Dorian", "Дорийский", "Dórico"],
- ["Pent", "Пента", "Penta"],
- ["Min pent", "Мин. пента", "Penta men."],
- ["Whole", "Целотон.", "Tonos"],
- ["Blues", "Блюз", "Blues"],
- ["Arp off", "АРП ВЫКЛ", "ARP NO"],
- ["Arp on", "АРП ВКЛ", "ARP SÍ"],
- ["Seq off", "СЕКВ ВЫКЛ", "SEC NO"],
- ["Seq on", "СЕКВ ВКЛ", "SEC SÍ"],
- ["Up", "Вверх", "Arriba"],
- ["Down", "Вниз", "Abajo"],
- ["Up-dn", "Вв-вн", "Ar-ab"],
- ["Rand", "Случ.", "Alea"],
- ["Order", "Порядок", "Orden"],
- ["Clear", "Сброс", "Borrar"],
- ["Armed", "Жду", "Listo"],
- ["No gesture", "Нет жеста", "Sin gesto"],
- ["Preview", "Прослушать", "Escuchar"],
- ["Crop", "Обрезать", "Recortar"],
- ["Remove", "Удалить", "Quitar"],
- ["Trim sil.", "Тишина", "Silencio"],
- ["Full", "Всё", "Todo"],
- ["Normalize", "Нормализ.", "Normalizar"],
- ["Fade in", "Нараст.", "Entrada"],
- ["Fade out", "Затух.", "Salida"],
- ["Snap", "Привязка", "Imán"],
- ["Cropped", "Обрезано", "Recortado"],
- ["Removed", "Удалено", "Quitado"],
- ["Silence trimmed", "Тишина убрана", "Silencio recortado"],
- ["Normalized", "Нормализовано", "Normalizado"],
- ["Reversed", "Развёрнуто", "Invertido"],
- ["Faded", "Фейд добавлен", "Fundido aplicado"],
- ["Nothing to crop", "Нечего обрезать", "Nada que recortar"],
- ["Nothing to trim", "Нечего убирать", "Nada que quitar"],
- ["Select a smaller region to cut", "Выбери область поменьше", "Elige una región más pequeña"],
- ["Drag the handles: loop region", "Тяни ручки: область лупа", "Arrastra los tiradores: región de bucle"],
- ["swipe: select", "свайп: выделить", "deslizar: seleccionar"],
- ["pinch: zoom", "щипок: зум", "pellizcar: zoom"],
- ["double-tap: reset zoom", "двойной тап: сброс зума", "doble toque: restablecer zoom"],
- ["● REC OUT", "● ЗАП. ВЫХОДА", "● GRAB. SALIDA"],
- ["Save wav", "Сохр. WAV", "Guardar WAV"],
- ["REC OUT records everything you hear and saves it as a 16-bit stereo WAV. SAVE WAV writes the current sample.", "ЗАП. ВЫХОДА пишет всё, что ты слышишь, и сохраняет 16-битный стерео WAV. СОХР. WAV сохраняет текущий сэмпл.", "GRAB. SALIDA graba todo lo que oyes y lo guarda como WAV estéreo de 16 bits. GUARDAR WAV guarda la muestra actual."],
- ["Enable MIDI", "Включить MIDI", "Activar MIDI"],
- ["Learn", "Назначить", "Asignar"],
- ["Notes, pitch bend and sustain pedal play the sampler. Tap LEARN, touch a knob, then move a controller to map it.", "Ноты, питч-бенд и педаль сустейна играют сэмплером. Нажми НАЗНАЧИТЬ, коснись ручки и подвигай контроллер, чтобы привязать его.", "Las notas, el pitch bend y el pedal de sustain tocan el sampler. Toca ASIGNAR, toca una perilla y mueve un controlador para asignarlo."],
- ["No MIDI inputs found", "MIDI-входы не найдены", "No se encontraron entradas MIDI"],
- ["Web MIDI is not supported in this browser", "Web MIDI не поддерживается в этом браузере", "Este navegador no admite Web MIDI"],
- ["MIDI access was denied", "Доступ к MIDI запрещён", "Acceso MIDI denegado"],
- ["Touch a knob, then move a controller", "Коснись ручки, затем подвигай контроллер", "Toca una perilla y mueve un controlador"],
- ["Move a MIDI controller", "Подвигай MIDI-контроллер", "Mueve un controlador MIDI"],
- ["MIDI learn off", "Назначение MIDI выключено", "Asignación MIDI desactivada"],
- ["Nothing recorded", "Ничего не записано", "Nada grabado"],
- ["Start the audio first", "Сначала запусти звук", "Inicia el audio primero"],
- ["Recording the output…", "Пишу выход…", "Grabando la salida…"],
- ["Generating…", "Генерирую…", "Generando…"],
- ["Frozen: position locked", "Заморожено: позиция зафиксирована", "Congelado: posición fija"],
- ["Unfrozen", "Разморожено", "Descongelado"],
- ["Record a gesture first", "Сначала запиши жест", "Graba un gesto primero"],
- ["Rec", "Запись", "Grab."],
- ["Pad", "Пэд", "Pad"],
- ["Glass", "Стекло", "Vidrio"],
- ["Choir", "Хор", "Coro"],
- ["Wind", "Ветер", "Viento"],
- ["Pluck", "Щипок", "Punteo"],
- ["Drift", "Дрейф", "Deriva"],
- ["Wobble", "Качание", "Vaivén"],
- ["Swarm", "Рой", "Enjambre"],
- ["Depth 0 switches an LFO off. The LFOs move the grain settings around the values of the knobs, so the cloud keeps changing by itself.", "Глубина 0 выключает LFO. LFO двигают настройки зёрен вокруг значений ручек, так что облако меняется само.", "Con profundidad 0 el LFO queda apagado. Los LFO mueven los ajustes de los granos alrededor de los valores de las perillas, así la nube cambia sola."],
- ["Keys, MIDI and Y: PITCH follow the scale", "Клавиши, MIDI и Y: ВЫСОТА следуют строю", "Las teclas, MIDI e Y: ALTURA siguen la escala"],
- ["Shared by the arpeggiator and the sequencer", "Общий для арпеджиатора и секвенсора", "Compartido por el arpegiador y el secuenciador"],
- ["Hold keys to arpeggiate them", "Держи клавиши, чтобы арпеджировать их", "Mantén teclas para arpegiarlas"],
- ["Tap a step to switch it", "тап по шагу включает его", "toca un paso para activarlo"],
- ["drag in the grid to set its note", "тяни по сетке, чтобы задать ноту", "arrastra en la rejilla para fijar su nota"],
- ["keys transpose", "клавиши транспонируют", "las teclas transponen"],
- ["Load any audio file or record from the microphone. GRAB turns the last seconds of what you hear into a new sample. Short loops and sustained sounds make the best clouds.", "Загрузи любой аудиофайл или запиши звук с микрофона. ЗАХВАТ превращает последние секунды того, что ты слышишь, в новый сэмпл. Лучше всего облака получаются из коротких лупов и протяжных звуков.", "Carga cualquier archivo de audio o graba con el micrófono. CAPTURAR convierte los últimos segundos de lo que oyes en una muestra nueva. Los bucles cortos y los sonidos sostenidos dan las mejores nubes."],
- ["Modulation", "Модуляция", "Modulación"],
- ["Edit sample", "Правка сэмпла", "Editar muestra"],
- ["Arp and sequencer", "Арп и секвенсор", "Arp y secuenciador"],
- ["Tap the keys to play pitches, hold several for a chord cloud. HOLD keeps the cloud going by itself, FREEZE also locks the position, OCT shifts the octave and RND randomises the grain settings. The arrows at the top undo and redo.", "Нажимай клавиши, чтобы менять высоту, зажми несколько — получится аккордовое облако. ДЕРЖАТЬ оставляет облако звучать само, ЗАМОРОЗКА ещё и фиксирует позицию, ОКТ сдвигает октаву, СЛУЧ случайно меняет настройки зёрен. Стрелки сверху — отмена и повтор.", "Toca las teclas para tocar notas y mantén varias para una nube de acordes. MANTENER deja la nube sonando sola, CONGELADO además fija la posición, OCT cambia la octava y ALEA aleatoriza los ajustes de los granos. Las flechas de arriba deshacen y rehacen."],
- ["GRAIN shapes the cloud. TONE adds scan, filter, envelope, echo and reverb. MOD has two LFOs. PLAY is a big touch surface with snapshots and gesture loops. SEQ has the scale, arpeggiator and sequencer. SAMPLE loads, records, edits and exports sound and holds the settings.", "ЗЕРНО формирует облако. ТОН добавляет скан, фильтр, огибающую, эхо и реверб. МОД — два LFO. ИГРА — большая сенсорная поверхность со снимками и петлями жестов. СЕКВ — строй, арпеджиатор и секвенсор. СЭМПЛ загружает, записывает, правит и экспортирует звук, здесь же настройки.", "GRANO da forma a la nube. TONO añade barrido, filtro, envolvente, eco y reverb. MOD tiene dos LFO. TOCAR es una gran superficie táctil con escenas y bucles de gestos. SEC tiene la escala, el arpegiador y el secuenciador. MUESTRA carga, graba, edita y exporta sonido y reúne los ajustes."],
- ["Two LFOs move the grain settings by themselves. Pick a shape and a target, then raise DEPTH. RATE sets how fast it moves.", "Два LFO сами двигают настройки зёрен. Выбери форму и цель, затем подними ГЛУБИНУ. СКОРОСТЬ задаёт, как быстро это движется.", "Dos LFO mueven los ajustes de los granos por sí solos. Elige una forma y un destino y sube la PROFUNDIDAD. VELOCIDAD marca lo rápido que se mueve."],
- ["REC arms the recorder: touch the surface, move around, then tap STOP. LOOP replays your movement, so your hands are free for the knobs.", "ЗАПИСЬ включает рекордер: коснись поверхности, подвигай пальцем и нажми СТОП. ПЕТЛЯ повторяет твоё движение, а руки свободны для ручек.", "GRABAR arma el grabador: toca la superficie, muévete y pulsa PARAR. BUCLE repite tu movimiento y tus manos quedan libres para las perillas."],
- ["Pick a root and a scale: the keys, MIDI and Y: PITCH snap to it, so every cloud stays in tune.", "Выбери тонику и строй: клавиши, MIDI и Y: ВЫСОТА подстроятся под него, и любое облако останется в строю.", "Elige una tónica y una escala: las teclas, MIDI e Y: ALTURA se ajustan a ella y toda nube suena afinada."],
- ["Hold keys with ARP on to arpeggiate them, or start SEQ: tap a step to switch it, drag in the grid to set its note. Keys transpose the pattern. TEMPO and RATE are shared.", "Держи клавиши при включённом АРП, чтобы арпеджировать их, или запусти СЕКВ: тапай шаги, тяни по сетке, чтобы задать ноту. Клавиши транспонируют паттерн. ТЕМП и СКОРОСТЬ общие.", "Mantén teclas con ARP activado para arpegiarlas, o inicia SEC: toca un paso para activarlo y arrastra en la rejilla para fijar su nota. Las teclas transponen el patrón. TEMPO y VELOCIDAD son comunes."],
- ["The loop region is where the grains are read from. Drag its two handles, swipe on empty space to select a region, pinch to zoom, double-tap to reset the zoom. CROP, REMOVE and the other tools change the sample itself, and the arrows at the top undo them.", "Область лупа — это место, откуда читаются зёрна. Тяни две ручки, свайпай по пустому месту, чтобы выделить область, щипком меняй масштаб, двойной тап сбрасывает зум. ОБРЕЗАТЬ, УДАЛИТЬ и другие инструменты меняют сам сэмпл, а стрелки сверху их отменяют.", "La región de bucle es de donde se leen los granos. Arrastra sus dos tiradores, desliza sobre el espacio vacío para seleccionar una región, pellizca para hacer zoom y toca dos veces para restablecerlo. RECORTAR, QUITAR y las demás herramientas cambian la propia muestra, y las flechas de arriba las deshacen."],
- ["LOAD brings in any audio file, REC records from the microphone. GRAB keeps the last seconds of what you hear and turns them into a new sample.", "ФАЙЛ загружает любой аудиофайл, ЗАПИСЬ пишет с микрофона. ЗАХВАТ сохраняет последние секунды того, что ты слышишь, как новый сэмпл.", "ABRIR carga cualquier archivo de audio y GRABAR graba con el micrófono. CAPTURAR guarda los últimos segundos de lo que oyes como una muestra nueva."],
- ["Raise DEPTH to wake an LFO up. Slow rates make the cloud breathe, fast ones make it flutter.", "Подними ГЛУБИНУ, чтобы оживить LFO. Медленные скорости заставляют облако дышать, быстрые — трепетать.", "Sube la PROFUNDIDAD para despertar un LFO. Las velocidades lentas hacen respirar la nube y las rápidas la hacen vibrar."],
- ["Touch the surface to play. REC records a gesture you can loop. Hold a SNAP pad to store the current sound, tap it to recall.", "Касайся поверхности, чтобы играть. ЗАПИСЬ пишет жест, который можно зациклить. Удержи пэд СНИМОК, чтобы сохранить текущий звук, тапни — чтобы вызвать.", "Toca la superficie para tocar. GRABAR graba un gesto que puedes repetir en bucle. Mantén un pad ESCENA para guardar el sonido actual y tócalo para recuperarlo."],
- ["Pick a scale to keep everything in tune. Hold keys with ARP on, or start SEQ. Keys transpose the sequence.", "Выбери строй, чтобы всё звучало чисто. Держи клавиши при включённом АРП или запусти СЕКВ. Клавиши транспонируют последовательность.", "Elige una escala para que todo suene afinado. Mantén teclas con ARP activado o inicia SEC. Las teclas transponen la secuencia."],
- ["Load an audio file, record your own or generate a demo. Drag the handles on the waveform to choose the loop region.", "Загрузи аудиофайл, запиши свой звук или создай демо. Тяни ручки на волне, чтобы выбрать область лупа.", "Carga un archivo de audio, graba el tuyo o genera una demo. Arrastra los tiradores de la onda para elegir la región de bucle."]
+  'Загрузи аудиофайл или запиши свой звук. Лучше всего подходят протяжные звуки и короткие лупы.'],
+ ["Undo", "Отмена"],
+ ["Redo", "Повтор"],
+ ["Mod", "Мод"],
+ ["Seq", "Секв"],
+ ["■ LOOP", "■ ПЕТЛЯ"],
+ ["▶ LOOP", "▶ ПЕТЛЯ"],
+ ["Edit", "Правка"],
+ ["Export", "Экспорт"],
+ ["Gesture", "Жест"],
+ ["Target", "Цель"],
+ ["Scale", "Строй"],
+ ["Root", "Тоника"],
+ ["Tempo", "Темп"],
+ ["Rate", "Скорость"],
+ ["Arpeggiator", "Арпеджиатор"],
+ ["Sequencer", "Секвенсор"],
+ ["Mode", "Режим"],
+ ["Octaves", "Октавы"],
+ ["Length", "Длина"],
+ ["Grab last", "Захват"],
+ ["Demo sounds", "Демо-звуки"],
+ ["Gate", "Гейт"],
+ ["Sin", "Син"],
+ ["Tri", "Треуг"],
+ ["Sqr", "Квадр"],
+ ["Saw", "Пила"],
+ ["S&H", "S&H"],
+ ["Pos", "Поз"],
+ ["Dens", "Плотн"],
+ ["Cut", "Срез"],
+ ["Rev", "Реверс"],
+ ["Chrom", "Хром"],
+ ["Major", "Мажор"],
+ ["Minor", "Минор"],
+ ["Dorian", "Дорийский"],
+ ["Pent", "Пента"],
+ ["Min pent", "Мин. пента"],
+ ["Whole", "Целотон."],
+ ["Blues", "Блюз"],
+ ["Arp off", "АРП ВЫКЛ"],
+ ["Arp on", "АРП ВКЛ"],
+ ["Seq off", "СЕКВ ВЫКЛ"],
+ ["Seq on", "СЕКВ ВКЛ"],
+ ["Up", "Вверх"],
+ ["Down", "Вниз"],
+ ["Up-dn", "Вв-вн"],
+ ["Rand", "Случ."],
+ ["Order", "Порядок"],
+ ["Clear", "Сброс"],
+ ["Armed", "Жду"],
+ ["No gesture", "Нет жеста"],
+ ["Preview", "Прослушать"],
+ ["Crop", "Обрезать"],
+ ["Remove", "Удалить"],
+ ["Trim sil.", "Тишина"],
+ ["Full", "Всё"],
+ ["Normalize", "Нормализ."],
+ ["Fade in", "Нараст."],
+ ["Fade out", "Затух."],
+ ["Snap", "Привязка"],
+ ["Cropped", "Обрезано"],
+ ["Removed", "Удалено"],
+ ["Silence trimmed", "Тишина убрана"],
+ ["Normalized", "Нормализовано"],
+ ["Reversed", "Развёрнуто"],
+ ["Faded", "Фейд добавлен"],
+ ["Nothing to crop", "Нечего обрезать"],
+ ["Nothing to trim", "Нечего убирать"],
+ ["Select a smaller region to cut", "Выбери область поменьше"],
+ ["Drag the handles: loop region", "Тяни ручки: область лупа"],
+ ["swipe: select", "свайп: выделить"],
+ ["pinch: zoom", "щипок: зум"],
+ ["double-tap: reset zoom", "двойной тап: сброс зума"],
+ ["● REC OUT", "● ЗАП. ВЫХОДА"],
+ ["Save wav", "Сохр. WAV"],
+ ["REC OUT records everything you hear and saves it as a 16-bit stereo WAV. SAVE WAV writes the current sample.", "ЗАП. ВЫХОДА пишет всё, что ты слышишь, и сохраняет 16-битный стерео WAV. СОХР. WAV сохраняет текущий сэмпл."],
+ ["Enable MIDI", "Включить MIDI"],
+ ["Learn", "Назначить"],
+ ["Notes, pitch bend and sustain pedal play the sampler. Tap LEARN, touch a knob, then move a controller to map it.", "Ноты, питч-бенд и педаль сустейна играют сэмплером. Нажми НАЗНАЧИТЬ, коснись ручки и подвигай контроллер, чтобы привязать его."],
+ ["No MIDI inputs found", "MIDI-входы не найдены"],
+ ["Web MIDI is not supported in this browser", "Web MIDI не поддерживается в этом браузере"],
+ ["MIDI access was denied", "Доступ к MIDI запрещён"],
+ ["Touch a knob, then move a controller", "Коснись ручки, затем подвигай контроллер"],
+ ["Move a MIDI controller", "Подвигай MIDI-контроллер"],
+ ["MIDI learn off", "Назначение MIDI выключено"],
+ ["Nothing recorded", "Ничего не записано"],
+ ["Start the audio first", "Сначала запусти звук"],
+ ["Recording the output…", "Пишу выход…"],
+ ["Generating…", "Генерирую…"],
+ ["Frozen: position locked", "Заморожено: позиция зафиксирована"],
+ ["Unfrozen", "Разморожено"],
+ ["Record a gesture first", "Сначала запиши жест"],
+ ["Rec", "Запись"],
+ ["Pad", "Пэд"],
+ ["Glass", "Стекло"],
+ ["Choir", "Хор"],
+ ["Wind", "Ветер"],
+ ["Pluck", "Щипок"],
+ ["Drift", "Дрейф"],
+ ["Wobble", "Качание"],
+ ["Swarm", "Рой"],
+ ["Depth 0 switches an LFO off. The LFOs move the grain settings around the values of the knobs, so the cloud keeps changing by itself.", "Глубина 0 выключает LFO. LFO двигают настройки зёрен вокруг значений ручек, так что облако меняется само."],
+ ["Keys, MIDI and Y: PITCH follow the scale", "Клавиши, MIDI и Y: ВЫСОТА следуют строю"],
+ ["Shared by the arpeggiator and the sequencer", "Общий для арпеджиатора и секвенсора"],
+ ["Hold keys to arpeggiate them", "Держи клавиши, чтобы арпеджировать их"],
+ ["Tap a step to switch it", "тап по шагу включает его"],
+ ["drag in the grid to set its note", "тяни по сетке, чтобы задать ноту"],
+ ["keys transpose", "клавиши транспонируют"],
+ ["Load any audio file or record from the microphone. GRAB turns the last seconds of what you hear into a new sample. Short loops and sustained sounds make the best clouds.", "Загрузи любой аудиофайл или запиши звук с микрофона. ЗАХВАТ превращает последние секунды того, что ты слышишь, в новый сэмпл. Лучше всего облака получаются из коротких лупов и протяжных звуков."],
+ ["Modulation", "Модуляция"],
+ ["Edit sample", "Правка сэмпла"],
+ ["Arp and sequencer", "Арп и секвенсор"],
+ ["Tap the keys to play pitches, hold several for a chord cloud. HOLD keeps the cloud going by itself, FREEZE also locks the position, OCT shifts the octave and RND randomises the grain settings. The arrows at the top undo and redo.", "Нажимай клавиши, чтобы менять высоту, зажми несколько — получится аккордовое облако. ДЕРЖАТЬ оставляет облако звучать само, ЗАМОРОЗКА ещё и фиксирует позицию, ОКТ сдвигает октаву, СЛУЧ случайно меняет настройки зёрен. Стрелки сверху — отмена и повтор."],
+ ["GRAIN shapes the cloud. TONE adds scan, filter, envelope, echo and reverb. MOD has two LFOs. PLAY is a big touch surface with snapshots and gesture loops. SEQ has the scale, arpeggiator and sequencer. SAMPLE loads, records, edits and exports sound and holds the settings.", "ЗЕРНО формирует облако. ТОН добавляет скан, фильтр, огибающую, эхо и реверб. МОД — два LFO. ИГРА — большая сенсорная поверхность со снимками и петлями жестов. СЕКВ — строй, арпеджиатор и секвенсор. СЭМПЛ загружает, записывает, правит и экспортирует звук, здесь же настройки."],
+ ["Two LFOs move the grain settings by themselves. Pick a shape and a target, then raise DEPTH. RATE sets how fast it moves.", "Два LFO сами двигают настройки зёрен. Выбери форму и цель, затем подними ГЛУБИНУ. СКОРОСТЬ задаёт, как быстро это движется."],
+ ["REC arms the recorder: touch the surface, move around, then tap STOP. LOOP replays your movement, so your hands are free for the knobs.", "ЗАПИСЬ включает рекордер: коснись поверхности, подвигай пальцем и нажми СТОП. ПЕТЛЯ повторяет твоё движение, а руки свободны для ручек."],
+ ["Pick a root and a scale: the keys, MIDI and Y: PITCH snap to it, so every cloud stays in tune.", "Выбери тонику и строй: клавиши, MIDI и Y: ВЫСОТА подстроятся под него, и любое облако останется в строю."],
+ ["Hold keys with ARP on to arpeggiate them, or start SEQ: tap a step to switch it, drag in the grid to set its note. Keys transpose the pattern. TEMPO and RATE are shared.", "Держи клавиши при включённом АРП, чтобы арпеджировать их, или запусти СЕКВ: тапай шаги, тяни по сетке, чтобы задать ноту. Клавиши транспонируют паттерн. ТЕМП и СКОРОСТЬ общие."],
+ ["The loop region is where the grains are read from. Drag its two handles, swipe on empty space to select a region, pinch to zoom, double-tap to reset the zoom. CROP, REMOVE and the other tools change the sample itself, and the arrows at the top undo them.", "Область лупа — это место, откуда читаются зёрна. Тяни две ручки, свайпай по пустому месту, чтобы выделить область, щипком меняй масштаб, двойной тап сбрасывает зум. ОБРЕЗАТЬ, УДАЛИТЬ и другие инструменты меняют сам сэмпл, а стрелки сверху их отменяют."],
+ ["LOAD brings in any audio file, REC records from the microphone. GRAB keeps the last seconds of what you hear and turns them into a new sample.", "ФАЙЛ загружает любой аудиофайл, ЗАПИСЬ пишет с микрофона. ЗАХВАТ сохраняет последние секунды того, что ты слышишь, как новый сэмпл."],
+ ["Raise DEPTH to wake an LFO up. Slow rates make the cloud breathe, fast ones make it flutter.", "Подними ГЛУБИНУ, чтобы оживить LFO. Медленные скорости заставляют облако дышать, быстрые — трепетать."],
+ ["Touch the surface to play. REC records a gesture you can loop. Hold a SNAP pad to store the current sound, tap it to recall.", "Касайся поверхности, чтобы играть. ЗАПИСЬ пишет жест, который можно зациклить. Удержи пэд СНИМОК, чтобы сохранить текущий звук, тапни — чтобы вызвать."],
+ ["Pick a scale to keep everything in tune. Hold keys with ARP on, or start SEQ. Keys transpose the sequence.", "Выбери строй, чтобы всё звучало чисто. Держи клавиши при включённом АРП или запусти СЕКВ. Клавиши транспонируют последовательность."],
+ ["Load an audio file, record your own or generate a demo. Drag the handles on the waveform to choose the loop region.", "Загрузи аудиофайл, запиши свой звук или создай демо. Тяни ручки на волне, чтобы выбрать область лупа."]
 ];
 var TR_RULES=[
  [/^LFO(\d) RATE$/,{ru:'LFO$1 СКОР.',es:'LFO$1 VEL.'}],
@@ -2199,10 +2434,9 @@ var TR_RULES=[
  [/^Imported (\d+) presets?$/,{ru:'Импортировано пресетов: $1',es:'Presets importados: $1'}],
  [/^Audio could not start: (.+)$/,{ru:'Не удалось запустить звук: $1',es:'No se pudo iniciar el audio: $1'}]
 ];
-var I18N={ru:{},es:{}},I18N_LC={ru:{},es:{}},curLang='en',i18nRec=new WeakMap(),i18nObs=null;
-TR.forEach(function(r){I18N.ru[r[0]]=r[1];I18N.es[r[0]]=r[2]});
-['ru','es'].forEach(function(l){for(var k in I18N[l])I18N_LC[l][k.toLowerCase()]=I18N[l][k]});
-function detectLang(){var l=(navigator.language||'en').slice(0,2).toLowerCase();return l==='ru'||l==='es'?l:'en'}
+var I18N={ru:{}},I18N_LC={ru:{}},curLang='en',i18nRec=new WeakMap(),i18nObs=null;
+TR.forEach(function(r){I18N.ru[r[0]]=r[1]});
+['ru'].forEach(function(l){for(var k in I18N[l])I18N_LC[l][k.toLowerCase()]=I18N[l][k]});
 function trPiece(k){
   var t=I18N[curLang][k],i,m;
   if(t!==undefined)return t;
@@ -2246,8 +2480,7 @@ function i18nSweep(root){
 }
 var I18N_OPTS={subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:I18N_ATTR};
 function setLang(code){
-  curLang=code==='auto'?detectLang():code;
-  if(curLang!=='ru'&&curLang!=='es')curLang='en';
+  curLang=code==='ru'?'ru':'en';
   document.documentElement.lang=curLang;
   if(i18nObs)i18nObs.disconnect();
   i18nSweep(document.body);
@@ -2266,7 +2499,7 @@ function setLang(code){
 
 /* ---------------- settings: language, tips, tutorial ---------------- */
 function buildSettings(){
-  [['auto','Auto'],['en','English'],['ru','Русский'],['es','Español']].forEach(function(l){
+  [['en','English'],['ru','Русский']].forEach(function(l){
     var c=document.createElement('button');c.type='button';c.className='chip'+(cfg.lang===l[0]?' on':'');c.textContent=l[1];
     c.addEventListener('click',function(){
       cfg.lang=l[0];store('grains.cfg.v1',cfg);setLang(cfg.lang);
@@ -2279,6 +2512,12 @@ function buildSettings(){
     c.addEventListener('click',function(){cfg.tips=o[0];store('grains.cfg.v1',cfg);$$('#tipsChips .chip').forEach(function(x){x.classList.toggle('on',x===c)})});
     $('#tipsChips').appendChild(c);
   });
+  [['simple','Simple'],['full','Full']].forEach(function(o){
+    var c=document.createElement('button');c.type='button';c.className='chip'+(cfg.ui===o[0]?' on':'');c.textContent=o[1];
+    c.addEventListener('click',function(){cfg.ui=o[0];store('grains.cfg.v1',cfg);applyLevel();$$('#levelChips .chip').forEach(function(x){x.classList.toggle('on',x===c)});toast(o[0]==='full'?'Full interface':'Simple interface')});
+    $('#levelChips').appendChild(c);
+  });
+  applyLevel();
   $('#tourBtn').addEventListener('click',function(){tourStart(true)});
   function chips(id,key,opts){
     $$('#'+id+' .chip').forEach(function(x){x.remove()});
@@ -2311,8 +2550,8 @@ $('#mbg').addEventListener('click',closeMenu);
 $('#mClose').addEventListener('click',closeMenu);
 $('#tourBtn').addEventListener('click',closeMenu);
 /* ---------------- tutorial: spotlight tour + one-time tips per screen ---------------- */
-var TOUR=[
- {title:'Welcome',text:'GRAINS is a granular sampler. It plays thousands of tiny grains of a sound to build clouds, textures and frozen moments. This short tour shows the essentials. Replay it any time from SAMPLE → Tutorial.'},
+var TOUR_ALL=[
+ {title:'Welcome',text:'GRAINS is a granular sampler. It plays thousands of tiny grains of a sound to build clouds, textures and frozen moments. This short tour shows the essentials. Replay it any time from ≡ → Tutorial.'},
  {sel:'#cvMain',tab:'grain',title:'Sample',text:'The sample, drawn as dots. Drag across it: left and right move the position grains are taken from, up and down widen the spray. The bright dots are the part being played.'},
  {sel:'#v-grain .kgrid',tab:'grain',title:'Grain settings',text:'SIZE is how long each grain lasts, DENSITY how many play per second. Short grains and high density give smooth textures, long and sparse ones stay recognisable. Drag a knob up or down, double-tap to reset it.'},
  {sel:'#dock',title:'Keys',text:'Tap the keys to play pitches, hold several for a chord cloud. HOLD keeps the cloud going by itself, FREEZE also locks the position, OCT shifts the octave and RND randomises the grain settings. The arrows at the top undo and redo.'},
@@ -2331,6 +2570,10 @@ var TOUR=[
 var tourEl=null;
 function tourStart(force){
   if(tourEl||(!force&&store('grains.tour')))return;
+  /* the simple level has no MOD, SEQ or SAMPLE screens: leave their steps out and say where they went */
+  var TOUR=TOUR_ALL;
+  if(isSimple())TOUR=TOUR_ALL.filter(function(t){return SIMPLE_OFF.indexOf(t.tab)<0}).map(function(t){
+    return t.sel==='#tabs'?{sel:t.sel,title:t.title,text:'GRAIN shapes the cloud. TONE adds scan, filter, envelope, echo and reverb. PLAY is a big touch surface with snapshots and gesture loops. For MOD, SEQ and the sample editor open ≡ and set Level to Full.'}:t});
   hideTip();
   var i=0,veil=document.createElement('div');veil.id='tour';
   veil.innerHTML='<div class="tspot"></div><div class="tcard"><b></b><p></p><div class="tdots"></div><div class="btns"><button class="btn" type="button" id="tSkip">Skip</button><button class="btn" type="button" id="tBack">Back</button><button class="btn pri" type="button" id="tNext">Next</button></div></div>';
@@ -2385,7 +2628,7 @@ function maybeTip(n){
   document.body.appendChild(tipEl);
   $('#tipOk').addEventListener('click',function(){seen[n]=1;store('grains.tipsSeen',seen);hideTip()});
   $('#tipOff').addEventListener('click',function(){
-    cfg.tips='off';store('grains.cfg.v1',cfg);hideTip();toast('Tips off — turn them on in SAMPLE');
+    cfg.tips='off';store('grains.cfg.v1',cfg);hideTip();toast('Tips off — turn them on in ≡');
     $$('#tipsChips .chip').forEach(function(x,k){x.classList.toggle('on',k===1)});
   });
   tipT=setTimeout(hideTip,14000);

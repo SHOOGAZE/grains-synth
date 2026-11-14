@@ -1,6 +1,6 @@
 /* ---------------- settings: language, tips, tutorial ---------------- */
 function buildSettings(){
-  [['auto','Auto'],['en','English'],['ru','Русский'],['es','Español']].forEach(function(l){
+  [['en','English'],['ru','Русский']].forEach(function(l){
     var c=document.createElement('button');c.type='button';c.className='chip'+(cfg.lang===l[0]?' on':'');c.textContent=l[1];
     c.addEventListener('click',function(){
       cfg.lang=l[0];store('grains.cfg.v1',cfg);setLang(cfg.lang);
@@ -13,6 +13,12 @@ function buildSettings(){
     c.addEventListener('click',function(){cfg.tips=o[0];store('grains.cfg.v1',cfg);$$('#tipsChips .chip').forEach(function(x){x.classList.toggle('on',x===c)})});
     $('#tipsChips').appendChild(c);
   });
+  [['simple','Simple'],['full','Full']].forEach(function(o){
+    var c=document.createElement('button');c.type='button';c.className='chip'+(cfg.ui===o[0]?' on':'');c.textContent=o[1];
+    c.addEventListener('click',function(){cfg.ui=o[0];store('grains.cfg.v1',cfg);applyLevel();$$('#levelChips .chip').forEach(function(x){x.classList.toggle('on',x===c)});toast(o[0]==='full'?'Full interface':'Simple interface')});
+    $('#levelChips').appendChild(c);
+  });
+  applyLevel();
   $('#tourBtn').addEventListener('click',function(){tourStart(true)});
   function chips(id,key,opts){
     $$('#'+id+' .chip').forEach(function(x){x.remove()});

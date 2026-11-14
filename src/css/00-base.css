@@ -28,7 +28,7 @@ header#top{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;padding:8p
 .oled .l1{font-size:11px;letter-spacing:.08em;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .oled .l2{font-size:20px;font-weight:500;margin-top:4px;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .oled .l3{font-size:10px;color:var(--dim);margin-top:3px;letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.oled canvas{width:118px;height:54px;display:block}
+.oled canvas{width:118px;height:40px;display:block}
 
 /* views */
 #views{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:0 2px 12px 0;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;scrollbar-width:none}
@@ -55,7 +55,7 @@ canvas.vis{width:100%;display:block;border-radius:5px;background:var(--oled);bor
 .knob .dot.on{fill:var(--accent)}
 .knob .cap{fill:#161616;stroke:#343434;stroke-width:1}
 .knob .ind{stroke:var(--accent);stroke-width:2.6;stroke-linecap:butt}
-.knob .lbl{font:700 9.5px var(--f);letter-spacing:.12em;color:var(--mute);margin-top:-2px;text-align:center;white-space:nowrap}
+.knob .lbl{font:700 10px var(--f);letter-spacing:.1em;color:var(--mute);margin-top:-2px;text-align:center;white-space:nowrap}
 .knob .vv{font-size:11px;min-height:15px;color:var(--fg)}
 .knob:focus-visible svg{filter:drop-shadow(0 0 6px var(--accent-glow))}
 
@@ -129,7 +129,7 @@ nav#tabs button.on::before{background:var(--accent-fg)}
 #start .big{position:absolute;opacity:0;pointer-events:none}
 #dust{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 @media(prefers-reduced-motion:reduce){#start .hz,.hbtn.rec,.btn.rec{animation:none}*{transition:none!important}}
-@media(max-height:640px){:root{--kbh:46px}#cvMain{height:120px}.oled{height:46px}}
+@media(max-height:640px){:root{--kbh:46px}#cvMain{height:120px}.oled{height:46px}.oled canvas{height:36px}}
 
 /* labels, primary button */
 .lab{font:700 10px var(--f);letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin:14px 0 6px}

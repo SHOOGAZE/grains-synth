@@ -63,11 +63,21 @@ function initAudio(){
   gate.connect(dry);dry.connect(master);
   gate.connect(dly);dly.connect(dlp);dlp.connect(fb);fb.connect(dly);dlp.connect(dWet);dWet.connect(master);
   gate.connect(conv);conv.connect(vWet);vWet.connect(master);
-  master.connect(comp);comp.connect(ana);ana.connect(ctx.destination);
-  initCapture(comp);
+  /* safety limiter after the compressor: straight up to 0.8, then a soft knee, so nothing above full scale reaches the speakers or a recording */
+  var lim=ctx.createWaveShaper(),lc=new Float32Array(2049),li,lx,la;
+  for(li=0;li<2049;li++){lx=li/1024-1;la=Math.abs(lx);lc[li]=la<=.8?lx:(lx<0?-1:1)*(.8+.18*Math.tanh((la-.8)/.18))}
+  lim.curve=lc;lim.oversample='2x';
+  master.connect(comp);comp.connect(lim);lim.connect(ana);ana.connect(ctx.destination);
+  initCapture(lim);
   DEFS.forEach(function(d){apply(d.k)});
   ctx.resume();
   setInterval(tick,25);
   if(!buf)makeDemo(0);
 }
 
+
+/* coming back from the background, a phone call or a locked screen: the browser may leave the audio context suspended or "interrupted"; wake it on return and on the next touch */
+function wakeAudio(){if(ctx&&ctx.state!=='running'){try{var p=ctx.resume();if(p&&p.catch)p.catch(function(){})}catch(e){}}}
+document.addEventListener('visibilitychange',function(){if(!document.hidden)wakeAudio()});
+window.addEventListener('pageshow',wakeAudio);
+document.addEventListener('pointerdown',wakeAudio,true);

@@ -11,7 +11,7 @@ function bindSurf(cv,yk,rec){
     if(rec)gPush(x,y,1);
   }
   cv.addEventListener('pointerdown',function(e){
-    cv.setPointerCapture(e.pointerId);
+    try{cv.setPointerCapture(e.pointerId)}catch(x){}
     if(!on){on=true;touching++;pushUndo();if(rec&&gest.rec===1)gStartRec(yk())}
     f(e);
   });
